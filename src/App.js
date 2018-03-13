@@ -5,7 +5,8 @@ import contract from 'truffle-contract'
 import ReleasesInterface from './build/contracts/Releases.json'
 
 const ipfsAPI = require('ipfs-api')
-const ipfs = ipfsAPI('localhost', '5001', {protocol: 'http'})
+const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'})
+const pull = require('pull-stream/pull')
 
 class App extends Component {
   state = {
@@ -34,7 +35,7 @@ class App extends Component {
     } else if (this.state.userWallet !== null && this.state.userBalance === null) {
       this.props.web3.eth.getBalance(this.state.userWallet).then(balance => this.setState({userBalance: this.props.web3.utils.fromWei(balance)}))
     } else if (this.props.web3 !== undefined){
-      // something like this, but for everything
+      // something like this, but for everything to refresh when done
       this.props.web3.eth.getAccounts((err, res) => this.setState({userWallet: res[0]}))
     }
   }
@@ -56,29 +57,65 @@ class App extends Component {
     this.state.contract.purchaseRelease(id, {value: 2000000000000000000, from: this.state.userWallet})
   }
 
-  // upload = () => {
-    // let files = [{path: '~/test.txt'}]
-    // ipfs.files.add(files, (err, files) => console.log(err, files))
-  // }
-
-  // figure out how to fetch change accounts when metamask changes?
-  // issues with IPFS and truffle?
-
   handleSubmit = (event) => {
     event.preventDefault()
     let title = event.target.title.value
     let artist = event.target.artist.value
 
-
-    let filePath = event.target.upload.value
-    let files = [{path: filePath}]
-    ipfs.files.add(files, (err, files) => console.log(err, files))
-
-
-    // this.state.contract.createRelease(artist, title, {from: this.state.userWallet})
+    this.state.contract.createRelease(artist, title, {from: this.state.userWallet})
     event.target.title.value = ""
     event.target.artist.value = ""
   }
+
+  getFile = (event) => {
+    ipfs.files.get("QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", (err, files) => {
+      console.log(files)
+      var blob = new Blob([files[0].content], { type: "audio/mp3" })
+      console.log(blob)
+      var blobUrl = URL.createObjectURL(blob);
+      var link = document.createElement("a"); // Or maybe get it from the current document
+      link.href = blobUrl;
+      link.download = "aDefaultFileName.mp3";
+      link.innerHTML = "Click here to download the file";
+      link.click()
+    })
+  }
+
+  captureFile = (event) => {
+    const file = event.target.files[0]
+    const name = event.target.value + "" // making a copy
+    console.log(name)
+    function readFileContents (file) {
+     return new Promise((resolve) => {
+       const reader = new window.FileReader()
+       reader.onloadend = (event) => resolve(event.target.result)
+       reader.readAsArrayBuffer(file)
+       })
+     }
+
+     readFileContents(file).then((buffer) => {
+       const stream = ipfs.files.addPullStream()
+       pull(
+        pull.values([
+          { path: name, content: Buffer.from(buffer) }
+        ]),
+        stream,
+        pull.collect((err, values) => {
+          console.log(err, values)
+        })
+      )
+     }).catch(console.log)
+
+     // readFileContents(file).then((buffer) => {
+     //   ipfs.files.addReadableStream({path: name, content: Buffer.from(buffer)}, (err, filesAdded) => {
+     //     if (err) {
+     //       console.log(err)
+     //     } else {
+     //       console.log("yay", filesAdded)
+     //     }
+     //   })
+     // }).catch(console.log)
+   }
 
   render() {
     return (
@@ -91,9 +128,10 @@ class App extends Component {
         <form onSubmit={this.handleSubmit}>
           <input type="text" name="title" placeholder="Release Title"/>
           <input type="text" name="artist" placeholder="Artist Name" />
-          <input type="file" name="upload"/>
+          <input type="file" name="upload" onChange={this.captureFile}/>
           <input type="submit" />
         </form>
+        <button onClick={this.getFile}>Get File</button>
         <h5> All Releases:</h5>
         <ol>
           {this.state.releases.map(release => <li key={release.id} onClick={() => this.purchaseRelease(release.id)}>{release.address} - {release.artist} - {release.title}</li>)}
