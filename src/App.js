@@ -5,7 +5,8 @@ import { Row, Col, Spin } from 'antd';
 import Header from './components/Header/Header'
 
 import { connect } from 'react-redux'
-import { setWeb3 } from './actions/web3actions'
+import { setWeb3 } from './actions/web3Actions'
+import { setUser } from './actions/userActions'
 
 import injectWeb3 from 'react-web3-hoc';
 import contract from 'truffle-contract';
@@ -15,25 +16,38 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 
 class App extends Component {
 
+  setupWeb3 = () => {
+    // handle changing of metamask instance?
+    // looks like polling at interval is the only answer
+    // or checking every time a transaction or something pertinent to the user is going to happen?
+    if (!this.props.w3){
+      const releasesContract = contract(ReleasesInterface)
+      releasesContract.setProvider(this.props.web3)
+
+      this.props.setWeb3(this.props.web3, releasesContract)
+    }
+  }
+
+  // call this every time a transaction happens?
+  // should I break this up? all three values are related.
+  getUserInfo = () => {
+    if (this.props.w3 && !this.props.user.wallet){
+      this.props.w3.eth.getAccounts()
+      .then(account => {
+        this.props.w3.eth.getBalance(account[0])
+        .then(balance => {
+          console.log(account, this.props.web3.utils.fromWei(balance))
+        })
+
+
+        return true // so the promise warning leaves me alone
+      })
+    }
+  }
+
   componentDidUpdate(){
-    console.log("hi", this.props)
-    this.props.setWeb3(this.props.web3)
-    // if (this.props.web3 !== undefined && this.state.userWallet === null) {
-    //   this.props.web3.eth.getAccounts((err, res) => this.setState({userWallet: res[0]}))
-    //   const Releases = contract(ReleasesInterface)
-    //   Releases.setProvider(this.props.web3.currentProvider)
-    //   Releases.deployed().then(instance => {
-    //     this.setState({contract: instance})
-    //     // this.fetchReleases()
-    //     // this.fetchEarnings()
-    //   })
-    // } else if (this.state.userWallet !== null && this.state.userBalance === null) {
-    //   this.props.web3.eth.getBalance(this.state.userWallet).then(balance => this.setState({userBalance: this.props.web3.utils.fromWei(balance)}))
-    // }
-    // else if (this.props.web3 !== undefined){
-    //   // something like this, but for everything to refresh when done
-    //   this.props.web3.eth.getAccounts((err, res) => this.setState({userWallet: res[0]}))
-    // }
+    this.setupWeb3()
+    this.getUserInfo()
   }
 
   // fetchEarnings = () => {
@@ -117,17 +131,18 @@ class App extends Component {
     return (
       <div className="App">
         <Row type="flex" justify="center"><Header /></Row>
-        { this.props.ready ? <button onClick={this.getFile}>Get File</button> : <Spin />}
+        <button onClick={this.getFile}>Get File</button>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
+  console.log(state)
   return {
-    ready: state.ready,
-    w3: state.web3
+    w3: state.web3.instance,
+    user: state.user
   }
 }
 
-export default connect(mapStateToProps, { setWeb3 })(injectWeb3()(App));
+export default connect(mapStateToProps, { setWeb3, setUser })(injectWeb3()(App));
