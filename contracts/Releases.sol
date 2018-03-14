@@ -2,6 +2,12 @@ pragma solidity ^0.4.19;
 
 contract Releases {
 
+  address owner;
+
+  function Releases() public {
+    owner = msg.sender;
+  }
+
   struct Release {
     address artist;
     string artistName;

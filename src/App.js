@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
-import injectWeb3 from 'react-web3-hoc'
-import contract from 'truffle-contract'
-import ReleasesInterface from './build/contracts/Releases.json'
+import { Row, Col } from 'antd';
 
-const ipfsAPI = require('ipfs-api')
-const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'})
-const pull = require('pull-stream/pull')
+import Header from './components/Header/Header'
+
+import injectWeb3 from 'react-web3-hoc';
+import contract from 'truffle-contract';
+import ReleasesInterface from './build/contracts/Releases.json';
+
+const ipfsAPI = require('ipfs-api');
+const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
+const pull = require('pull-stream/pull');
 
 class App extends Component {
   state = {
@@ -19,7 +23,7 @@ class App extends Component {
 
   shouldComponentUpdate(){
     // compare accounts etc, prevent endless MetaMask updates?
-    return true
+    return true;
   }
 
   componentDidUpdate(){
@@ -120,10 +124,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <h1> Welcome </h1>
-        <h5>Wallet: {this.state.userWallet}</h5>
-        <h5>Balance: {this.state.userBalance} ETH</h5>
-        <h5>Earnings: {this.state.earnings} ETH</h5>
+        <Row type="flex" justify="center"><Header /></Row>
         <h5>Submit New Release:</h5>
         <form onSubmit={this.handleSubmit}>
           <input type="text" name="title" placeholder="Release Title"/>
