@@ -9,5 +9,3 @@ import web3reducer from './reducers/web3reducer';
 const store = createStore(web3reducer)
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
-
-store.dispatch({type: '@@INIT'})

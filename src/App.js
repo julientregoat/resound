@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Row, Col } from 'antd';
+import { Row, Col, Spin } from 'antd';
 
 import Header from './components/Header/Header'
 
 import { connect } from 'react-redux'
+import { setWeb3 } from './actions/web3actions'
 
 import injectWeb3 from 'react-web3-hoc';
 import contract from 'truffle-contract';
@@ -14,25 +15,21 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 
 class App extends Component {
 
-  // shouldComponentUpdate(){
-  //   // compare accounts etc
-  //   return true;
-  // }
-
   componentDidUpdate(){
     console.log("hi", this.props)
-    if (this.props.web3 !== undefined && this.state.userWallet === null) {
-      this.props.web3.eth.getAccounts((err, res) => this.setState({userWallet: res[0]}))
-      const Releases = contract(ReleasesInterface)
-      Releases.setProvider(this.props.web3.currentProvider)
-      Releases.deployed().then(instance => {
-        this.setState({contract: instance})
-        // this.fetchReleases()
-        // this.fetchEarnings()
-      })
-    } else if (this.state.userWallet !== null && this.state.userBalance === null) {
-      this.props.web3.eth.getBalance(this.state.userWallet).then(balance => this.setState({userBalance: this.props.web3.utils.fromWei(balance)}))
-    }
+    this.props.setWeb3(this.props.web3)
+    // if (this.props.web3 !== undefined && this.state.userWallet === null) {
+    //   this.props.web3.eth.getAccounts((err, res) => this.setState({userWallet: res[0]}))
+    //   const Releases = contract(ReleasesInterface)
+    //   Releases.setProvider(this.props.web3.currentProvider)
+    //   Releases.deployed().then(instance => {
+    //     this.setState({contract: instance})
+    //     // this.fetchReleases()
+    //     // this.fetchEarnings()
+    //   })
+    // } else if (this.state.userWallet !== null && this.state.userBalance === null) {
+    //   this.props.web3.eth.getBalance(this.state.userWallet).then(balance => this.setState({userBalance: this.props.web3.utils.fromWei(balance)}))
+    // }
     // else if (this.props.web3 !== undefined){
     //   // something like this, but for everything to refresh when done
     //   this.props.web3.eth.getAccounts((err, res) => this.setState({userWallet: res[0]}))
@@ -120,24 +117,17 @@ class App extends Component {
     return (
       <div className="App">
         <Row type="flex" justify="center"><Header /></Row>
-          <h5>Wallet: {this.state.userWallet}</h5>
-          <h5>Balance: {this.state.userBalance} ETH</h5>
-          <h5>Earnings: {this.state.earnings} ETH</h5>
-        <h5>Submit New Release:</h5>
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" name="title" placeholder="Release Title"/>
-          <input type="text" name="artist" placeholder="Artist Name" />
-          <input type="file" name="upload" onChange={this.captureFile}/>
-          <input type="submit" />
-        </form>
-        <button onClick={this.getFile}>Get File</button>
-        <h5> All Releases:</h5>
-        <ol>
-          {this.state.releases.map(release => <li key={release.id} onClick={() => this.purchaseRelease(release.id)}>{release.address} - {release.artist} - {release.title}</li>)}
-        </ol>
+        { this.props.ready ? <button onClick={this.getFile}>Get File</button> : <Spin />}
       </div>
     );
   }
 }
 
-export default injectWeb3()(App);
+const mapStateToProps = state => {
+  return {
+    ready: state.ready,
+    w3: state.web3
+  }
+}
+
+export default connect(mapStateToProps, { setWeb3 })(injectWeb3()(App));
