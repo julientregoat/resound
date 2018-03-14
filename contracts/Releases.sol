@@ -5,7 +5,7 @@ contract Releases {
   address owner;
 
   function Releases() public {
-    owner = msg.sender;
+      owner = msg.sender;
   }
 
   struct Release {
