@@ -22,26 +22,28 @@ class App extends Component {
     // or checking every time a transaction or something pertinent to the user is going to happen?
     if (!this.props.w3){
       const releasesContract = contract(ReleasesInterface)
-      releasesContract.setProvider(this.props.web3)
-
-      this.props.setWeb3(this.props.web3, releasesContract)
+      releasesContract.setProvider(this.props.web3.currentProvider)
+      releasesContract.deployed().then(instance => this.props.setWeb3(this.props.web3, instance))
     }
   }
 
   // call this every time a transaction happens?
-  // should I break this up? all three values are related.
+  // should I break this up into non nested thangs?
   getUserInfo = () => {
     if (this.props.w3 && !this.props.user.wallet){
+      let wallet;
+      let walletBalance;
+
       this.props.w3.eth.getAccounts()
-      .then(account => {
-        this.props.w3.eth.getBalance(account[0])
-        .then(balance => {
-          console.log(account, this.props.web3.utils.fromWei(balance))
-        })
-
-
-        return true // so the promise warning leaves me alone
+      .then(accounts => {
+        wallet = accounts[0];
+        return this.props.w3.eth.getBalance(wallet);
       })
+      .then(walletBal => {
+        walletBalance = this.props.web3.utils.fromWei(walletBal)
+        return this.props.contract.viewBalance({from: wallet})
+      })
+      .then(earningsBalance => this.props.setUser(wallet, walletBalance, earningsBalance.toNumber()))
     }
   }
 
@@ -50,10 +52,6 @@ class App extends Component {
     this.getUserInfo()
   }
 
-  // fetchEarnings = () => {
-  //   this.state.contract.viewBalance({from: this.state.userWallet}).then(balance => this.setState({earnings : this.props.web3.utils.fromWei(balance.toString())}))
-  // }
-  //
   // fetchReleases = () => {
   //   this.state.contract.releaseCount().then(num => {
   //     let count = num.toNumber();
@@ -141,6 +139,7 @@ const mapStateToProps = state => {
   console.log(state)
   return {
     w3: state.web3.instance,
+    contract:state.web3.contract,
     user: state.user
   }
 }

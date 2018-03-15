@@ -6,3 +6,5 @@ const setUser = (wallet, walletBalance, earningsBalance) => ({
     earningsBalance: earningsBalance
   }
 })
+
+export { setUser }
