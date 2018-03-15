@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col } from 'antd';
 
 import Header from './components/Header/Header'
 
 import { connect } from 'react-redux'
 import { setWeb3 } from './actions/web3Actions'
 import { setUser } from './actions/userActions'
+import { setReleases } from './actions/releasesActions'
 
 import injectWeb3 from 'react-web3-hoc';
 import contract from 'truffle-contract';
@@ -48,27 +49,32 @@ class App extends Component {
   }
 
   getReleases = () => {
-    this.props.contract.releaseCount()
-    .then(num => {
-      console.log(num)
-      let count = num.toNumber();
-      for (let i=0; i < count; i++){
-        this.state.contract.releaseInfo(i).then(res => this.setState({releases: [...this.state.releases, {artist: res[0], title: res[1], id: i, address: res[2]}]}))
-      }
-    })
-    // solidity return values => {artist: res[0], title: res[1], id: i, address: res[2]}
+    if ( this.props.contract ){
+
+      this.props.contract.releaseCount()
+      .then(num => {
+        let count = num.toNumber();
+        console.log(count)
+
+        // iterate through all releases using the total count provided
+        for(let i = 0; i < count; i++){
+          this.props.contract.releaseInfo(i).then(console.log)
+        }
+      })
+      // solidity getRelease return values => {artist: res[0], title: res[1], id: i, address: res[2]}
+    }
   }
 
   componentDidUpdate(){
     this.setupWeb3()
     this.getUserInfo()
-
+    this.getReleases()
   }
 
   render() {
     return (
       <div className="App">
-        <Row type="flex" justify="center"><Header /></Row>
+        <Header />
       </div>
     );
   }
@@ -79,8 +85,9 @@ const mapStateToProps = state => {
   return {
     w3: state.web3.instance,
     contract:state.web3.contract,
-    user: state.user
+    user: state.user,
+    releases: state.releases
   }
 }
 
-export default connect(mapStateToProps, { setWeb3, setUser })(injectWeb3()(App));
+export default connect(mapStateToProps, { setWeb3, setUser, setReleases})(injectWeb3()(App));
