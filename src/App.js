@@ -129,7 +129,6 @@ class App extends Component {
     return (
       <div className="App">
         <Row type="flex" justify="center"><Header /></Row>
-        <button onClick={this.getFile}>Get File</button>
       </div>
     );
   }
