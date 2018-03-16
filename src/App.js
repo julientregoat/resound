@@ -7,8 +7,9 @@ import HomePage from './components/Home/HomePage';
 import AccountPage from './components/Account/AccountPage';
 import NewReleasePage from './components/NewRelease/NewReleasePage'
 
-import { Route, Redirect, Switch } from 'react-router-dom';
+import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { setWeb3 } from './actions/web3Actions'
 import { setUser } from './actions/userActions'
@@ -77,6 +78,7 @@ class App extends Component {
   }
 
   render() {
+    console.log(this.props)
     return (
       <div className="App">
         <Header />
@@ -99,5 +101,4 @@ const mapStateToProps = state => {
     releases: state.releases
   }
 }
-
-export default connect(mapStateToProps, { setWeb3, setUser, setReleases})(injectWeb3()(App));
+export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setReleases }), injectWeb3())(App)
