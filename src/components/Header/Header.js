@@ -1,26 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux'
 
+import Navbar from './Navbar'
 import { Row, Col } from 'antd';
 
-class Header extends Component {
+const Header = ({ user }) => (
+  <div>
+    <Row type="flex" justify="center"><h1> bitcamp </h1></Row>
 
-  render() {
-    return (
-      <div>
-        <Row type="flex" justify="center"><h1> music website </h1></Row>
-        <Row type="flex" justify="end">
-          <span className="menu-item">Wallet: {this.props.user.wallet}</span>
-        </Row>
-        <Row type="flex" justify="end">
-          <span className="menu-item">Balance: {this.props.user.walletBalance} ETH</span>
-          <span className="menu-item">Earnings: {this.props.user.earningsBalance} ETH</span>
-        </Row>
-      </div>
-    );
-  }
+    <Row type="flex" justify="space-between">
+      <span className="header-item">Wallet: {user.wallet}</span>
+      <span>
+        <span className="header-item">Balance: {user.walletBalance} ETH</span>
+        <span className="header-item">|</span>
+        <span className="header-item">Earnings: {user.earningsBalance} ETH</span>
+      </span>
+    </Row>
 
-}
+    <Row type="flex" justify="start">
+      <Navbar />
+    </Row>
+
+  </div>
+);
 
 const mapStateToProps = state => ({
   user:  state.user

@@ -2,7 +2,12 @@ import React, { Component } from 'react';
 import './App.css';
 import { Row, Col } from 'antd';
 
-import Header from './components/Header/Header'
+import Header from './components/Header/Header';
+import HomePage from './components/Home/HomePage';
+import AccountPage from './components/Account/AccountPage';
+import NewReleasePage from './components/NewRelease/NewReleasePage'
+
+import { Route, Redirect, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux'
 import { setWeb3 } from './actions/web3Actions'
@@ -29,7 +34,6 @@ class App extends Component {
   }
 
   // call this every time a transaction happens?
-  // should I break this up into non nested thangs?
   getUserInfo = () => {
     if (this.props.w3 && !this.props.user.wallet){
       let wallet;
@@ -66,6 +70,7 @@ class App extends Component {
   }
 
   componentDidUpdate(){
+    console.log("hi")
     this.setupWeb3()
     this.getUserInfo()
     this.getReleases()
@@ -75,6 +80,11 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
+        <Switch>
+          <Route exact path="/" component={HomePage}/>
+          <Route path="/me" component={AccountPage}/>
+          <Route path="/new" component={NewReleasePage}/>
+        </Switch>
       </div>
     );
   }

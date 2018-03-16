@@ -1,6 +1,14 @@
 @import '~antd/dist/antd.css';
 
-.menu-item {
-  margin-left: 5px;
+.App {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.header-item {
   margin-right: 5px;
+}
+
+.menu-item {
+  margin-right: 30px;
 }
