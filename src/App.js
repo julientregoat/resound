@@ -71,7 +71,6 @@ class App extends Component {
   }
 
   componentDidUpdate(){
-    console.log("hi")
     this.setupWeb3()
     this.getUserInfo()
     this.getReleases()
@@ -92,13 +91,10 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  console.log(state)
-  return {
-    w3: state.web3.instance,
-    contract:state.web3.contract,
-    user: state.user,
-    releases: state.releases
-  }
-}
+const mapStateToProps = state => ({
+  w3: state.web3.instance,
+  contract:state.web3.contract,
+  user: state.user,
+  releases: state.releases
+})
 export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setReleases }), injectWeb3())(App)
