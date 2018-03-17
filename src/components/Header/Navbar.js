@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
 
 const NavBar = ({}) => (
-  <React.Fragment>
-    <Link to="/" className="menu-item">Home</Link>
-    <Link to="/me" className="menu-item">Account</Link>
-    <Link to="/new" className="menu-item">New Release</Link>
-  </React.Fragment>
+  <Menu mode="horizontal">
+    <Menu.Item><Link to="/" className="menu-item">Home</Link></Menu.Item>
+    <Menu.Item><Link to="/me" className="menu-item">Account</Link></Menu.Item>
+    <Menu.Item><Link to="/new" className="menu-item">New Release</Link></Menu.Item>
+  </Menu>
 );
 
 export default NavBar;
