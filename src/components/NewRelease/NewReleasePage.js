@@ -21,9 +21,6 @@ class NewReleasePage extends Component {
 
   uploadFiles = () => {
 
-    // only upload the last image!
-    // or add a 'current photo' to state for previews
-    
     let fileCount = this.props.uploader.files.length;
 
     for(let i=0; i < fileCount; i++){
@@ -42,6 +39,9 @@ class NewReleasePage extends Component {
   }
 
   handleSubmit = (e) => {
+    // only upload the last image!
+    // or add a 'current photo' to state for previews
+    // store images as base64 in IPFS
     e.preventDefault()
     this.props.isUploading()
     this.uploadFiles()
