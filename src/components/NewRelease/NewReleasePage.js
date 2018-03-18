@@ -20,7 +20,7 @@ class NewReleasePage extends Component {
   }
 
   validatePrice = (rule, value, callback) => {
-    isNaN(parseInt(value)) ? callback("Must be a number!") : callback()
+    isNaN(parseInt(value, 10)) ? callback("Must be a number!") : callback()
   }
 
   getBase64(img) {
@@ -63,11 +63,11 @@ class NewReleasePage extends Component {
     form.validateFields((err, values) => {
       console.log(this.props.contract)
       console.log(values)
-      if (err){
-        return message.error('Please check your data and try again.')
-      }
-      message.success('yay!')
-      this.props.contract.createRelease(values.artist, values.title, values.description, values.tracklist, values.price, "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", ["QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh"])
+      // if (err){
+      //   return message.error('Please check your data and try again.')
+      // }
+      // message.success('yay!')
+      this.props.contract.createRelease(values.artist, values.title, values.description, values.tracklist, values.price, "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", [Buffer.from("QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh")], {from: this.props.user.wallet})
       .then(console.log)
     })
     // this.props.isUploading()
@@ -107,6 +107,7 @@ class NewReleasePage extends Component {
 
 const mapStateToProps = state => ({
   contract: state.web3.contract,
+  user: state.user,
   uploader: state.site.uploader,
   USDPrice: state.site.USDPrice,
   USDConversion: state.site.uploader.USDConversion

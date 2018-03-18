@@ -44,8 +44,12 @@ contract Releases {
     msg.sender.transfer(balance[msg.sender]);
   }
 
-  function releaseInfo(uint _id) public view returns (string artistName, string title, address artist){
-    return (releases[_id].artistName, releases[_id].title, releases[_id].artist);
+  function releaseInfo(uint _id) public view returns (address _artist, string _artistName, string _title, string _description, string _tracklist) {
+    return (releases[_id].artist, releases[_id].artistName, releases[_id].title, releases[_id].description, releases[_id].tracklist);
+  }
+
+  function releaseContent(uint _id) public view returns (uint64, string, byte[46][]){
+    return (releases[_id].price, releases[_id].artwork, releases[_id].files);
   }
 
   function releaseCount() public view returns (uint){

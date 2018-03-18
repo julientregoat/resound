@@ -71,10 +71,12 @@ class App extends Component {
       this.props.contract.releaseCount()
       .then(num => {
         let count = num.toNumber();
-
+        console.log(count)
         // iterate through all releases using the total count provided
         for(let i = 0; i < count; i++){
-          // this.props.contract.releaseInfo(i).then(console.log)
+          // can use Promise.all here
+          this.props.contract.releaseInfo(i).then(console.log)
+          this.props.contract.releaseContent(i).then(values => console.log(Buffer.from(values[2][0]).toString('utf8')))
         }
       })
       // solidity getRelease return values => {artist: res[0], title: res[1], id: i, address: res[2]}
