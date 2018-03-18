@@ -8,6 +8,9 @@ contract Releases {
       owner = msg.sender;
   }
 
+  /*  need to look into cost difference for hashing the information about the release vs storing it as a direct string.
+      so far it just looks like it's so cheap to upload, it doesn't really matter
+  */
   struct Release {
     uint id;
     address artist;
