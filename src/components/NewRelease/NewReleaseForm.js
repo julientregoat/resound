@@ -45,7 +45,7 @@ const NewReleaseForm = ({ submit, setFileList, form }) => (
       {form.getFieldDecorator('description')(<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="File Upload" extra="Please note that your tracks will have the same title when downloaded as when uploaded.">
+    <Form.Item  {...formItemLayout} label="Music Upload" extra="MP3 files only.">
       <Upload.Dragger
         accept="audio/mp3"
         multiple
@@ -53,7 +53,6 @@ const NewReleaseForm = ({ submit, setFileList, form }) => (
         beforeUpload={() => false}
       >
         <p className="ant-upload-text">Click or drag files to this area to upload.</p>
-        <p className="ant-upload-hint">MP3 files only.</p>
       </Upload.Dragger>
     </Form.Item>
 

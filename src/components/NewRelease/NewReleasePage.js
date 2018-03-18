@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setUploaderFileList, isUploading, isNotUploading } from '../../actions/siteActions'
 
-import { Spin } from 'antd'
+import { Spin, message } from 'antd'
 import NewReleaseForm from './NewReleaseForm'
 
 const ipfsAPI = require('ipfs-api');
@@ -12,19 +12,27 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 class NewReleasePage extends Component {
 
   uploadFiles = () => {
+    let fileCount = this.props.uploader.files.length;
 
-    let reader = new FileReader();
-    reader.onloadend = () => {
-      buffer = Buffer.from(reader.result)
-      console.log(buffer)
-      ipfs.files.add({content: buffer}, {progress: (poop)=>console.log(poop)}).then(console.log)
+    for(let i=0; i < fileCount; i++){
+      let reader = new FileReader();
+
+      reader.onloadend = () => {
+        buffer = Buffer.from(reader.result)
+        ipfs.files.add({content: buffer}).then(res => {
+          console.log(res)
+          message.success((i + 1) + " of "+ fileCount + " files uploaded")
+        })
+      }
+
+      let buffer = reader.readAsArrayBuffer(this.props.uploader.files[i])
     }
-    let buffer = reader.readAsArrayBuffer()
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.isUploading()
+    this.uploadFiles()
   }
 
   setFileList = (e) => {
