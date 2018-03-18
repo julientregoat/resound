@@ -1,13 +1,12 @@
 const initialState = {
   USDPrice: 0,
   uploader: {
-    uploading: false
+    uploading: false,
     files: []
   }
 }
 
 export default (state = initialState, action) => {
-  console.log(action)
   switch(action.type){
     case 'SET_USD_PRICE':
       return {
@@ -20,6 +19,22 @@ export default (state = initialState, action) => {
         uploader: {
           ...state.uploader,
           files: action.payload.files
+        }
+      }
+    case 'IS_UPLOADING':
+    return {
+      ...state,
+      uploader: {
+        ...state.uploader,
+        uploading: true
+      }
+    }
+    case 'IS_NOT_UPLOADING':
+      return {
+        ...state,
+        uploader: {
+          ...state.uploader,
+          uploading: false
         }
       }
     case 'RESET_FILES':

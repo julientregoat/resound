@@ -12,4 +12,12 @@ const setUploaderFileList = (filelist) => ({
   }
 })
 
-export { setUSDPrice, setUploaderFileList }
+const isUploading = () => ({
+  type: 'IS_UPLOADING'
+})
+
+const isNotUploading = () => ({
+  type: 'IS_NOT_UPLOADING'
+})
+
+export { setUSDPrice, setUploaderFileList, isUploading, isNotUploading }

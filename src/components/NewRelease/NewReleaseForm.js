@@ -45,7 +45,7 @@ const NewReleaseForm = ({ submit, setFileList, form }) => (
       {form.getFieldDecorator('description')(<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="File Upload" extra="Please note that your tracks will have the same title when downloaded as uploaded">
+    <Form.Item  {...formItemLayout} label="File Upload" extra="Please note that your tracks will have the same title when downloaded as when uploaded.">
       <Upload.Dragger
         accept="audio/mp3"
         multiple
