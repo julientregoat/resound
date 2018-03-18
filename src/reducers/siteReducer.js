@@ -5,6 +5,8 @@ const initialState = {
   }
 }
 
+// create 'unpinAll' function for IPFS
+
 export default (state = initialState, action) => {
   switch(action.type){
     case 'SET_USD_PRICE':

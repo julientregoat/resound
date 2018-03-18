@@ -50,7 +50,6 @@ const NewReleaseForm = ({ submit, upload }) => (
         accept="audio/mp3"
         multiple
         customRequest={upload}
-        data={upload}
       >
         <p className="ant-upload-text">Click or drag files to this area to upload.</p>
         <p className="ant-upload-hint">MP3 files only.</p>

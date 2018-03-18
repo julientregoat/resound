@@ -1,2 +1,3 @@
 - I definitely don't need Redux for this at this point, but I want to practice with it.
 - I really don't like 'earningsBalance'.
+- Need to throw errors

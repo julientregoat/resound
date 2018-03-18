@@ -11,14 +11,24 @@ class NewReleasePage extends Component {
     console.log(e.target.file)
   }
 
-  handleIDK = (e) => {
-    console.log("upload single file", e)
-  }
-
   handleUploader = (e) => {
-    console.log(e)
     console.log(e.file)
+    let buffer;
+    let reader = new FileReader();
+    reader.onloadend = (ev) => {
+      console.log(ev)
+      console.log(buffer)
+    }
+    buffer = reader.readAsArrayBuffer(e.file)
+    // let arybuffer = reader.readAsArrayBuffer(e)
+    // console.log(Buffer.from(arybuffer))
     // dispatch action or how do I handle file hash?
+    // fetch('http://127.0.0.1:5001/api/v0/add/',{
+    //   method: 'POST',
+    //   headers: {'Content-Type': 'audio/mp3'},
+    //   body: Buffer.from(e.file)
+    // }).then(console.log)
+
   }
 
   render() {
