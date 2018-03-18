@@ -1,40 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { setUploaderFileList } from '../../actions/siteActions'
 
 import NewReleaseForm from './NewReleaseForm'
+
+const ipfsAPI = require('ipfs-api');
+const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
+
 
 class NewReleasePage extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    console.log(e.target)
-    console.log(e.target.file)
+    console.log(e.target.description)
   }
-
-  handleUploader = (e) => {
-    console.log(e.file)
-    let buffer;
-    let reader = new FileReader();
-    reader.onloadend = (ev) => {
-      console.log(ev)
-      console.log(buffer)
-    }
-    buffer = reader.readAsArrayBuffer(e.file)
-    // let arybuffer = reader.readAsArrayBuffer(e)
-    // console.log(Buffer.from(arybuffer))
-    // dispatch action or how do I handle file hash?
-    // fetch('http://127.0.0.1:5001/api/v0/add/',{
-    //   method: 'POST',
-    //   headers: {'Content-Type': 'audio/mp3'},
-    //   body: Buffer.from(e.file)
-    // }).then(console.log)
-
+  
+  setFileList = (e) => {
+    this.props.setUploaderFileList(e.fileList)
+    // let reader = new FileReader();
+    // reader.onloadend = () => {
+    //   buffer = Buffer.from(reader.result)
+    //   console.log(buffer)
+    //   ipfs.files.add({content: buffer}, {progress: (poop)=>console.log(poop)}).then(console.log)
+    // }
+    // let buffer = reader.readAsArrayBuffer(e.file)
   }
 
   render() {
     return (
       <div>
-        <NewReleaseForm submit={this.handleSubmit} upload={this.handleUploader}/>
+        <NewReleaseForm submit={this.handleSubmit} setFileList={this.setFileList}/>
       </div>
     );
   }
@@ -42,7 +37,8 @@ class NewReleasePage extends Component {
 }
 
 const mapStateToProps = state => ({
-  contract: state.web3.contract
+  contract: state.web3.contract,
+  uploader: state.site.uploader
 })
 
-export default connect(mapStateToProps)(NewReleasePage);
+export default connect(mapStateToProps, { setUploaderFileList })(NewReleasePage);

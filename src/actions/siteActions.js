@@ -5,4 +5,11 @@ const setUSDPrice = (price) => ({
   }
 })
 
-export { setUSDPrice }
+const setUploaderFileList = (filelist) => ({
+  type: 'SET_FILE_LIST',
+  payload: {
+    files: filelist
+  }
+})
+
+export { setUSDPrice, setUploaderFileList }

@@ -25,31 +25,32 @@ const uploadItemLayout = {
   }
 };
 
-const NewReleaseForm = ({ submit, upload }) => (
-
-  <Form onSubmit={submit}>
+const NewReleaseForm = ({ submit, setFileList, form }) => (
+  <Form
+    onSubmit={submit}>
 
     <Form.Item  {...formItemLayout} label="Artist">
-      <Input size="large"/>
+      {form.getFieldDecorator('artist')(<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Release Title">
-      <Input size="large"/>
+      {form.getFieldDecorator('title')(<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Tracklisting">
-      <Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>
+      {form.getFieldDecorator('tracklist')(<Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Description">
-      <Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>
+      {form.getFieldDecorator('description')(<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="File Upload">
+    <Form.Item  {...formItemLayout} label="File Upload" extra="Please note that your tracks will have the same title when downloaded as uploaded">
       <Upload.Dragger
         accept="audio/mp3"
         multiple
-        customRequest={upload}
+        onChange={setFileList}
+        beforeUpload={() => false}
       >
         <p className="ant-upload-text">Click or drag files to this area to upload.</p>
         <p className="ant-upload-hint">MP3 files only.</p>
@@ -57,7 +58,7 @@ const NewReleaseForm = ({ submit, upload }) => (
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Price">
-      <Input size="large" addonAfter="ETH"/>
+      {form.getFieldDecorator('price')(<Input size="large" addonAfter="ETH"/>)}
     </Form.Item>
 
     <Form.Item {...uploadItemLayout}>
@@ -69,4 +70,4 @@ const NewReleaseForm = ({ submit, upload }) => (
   </Form>
 );
 
-export default NewReleaseForm;
+export default Form.create()(NewReleaseForm);

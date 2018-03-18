@@ -1,6 +1,7 @@
 @import '~antd/dist/antd.css';
 
 .App {
+  margin-top: 25px;
   margin-left: 300px;
   margin-right: 300px;
 }
