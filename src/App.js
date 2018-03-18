@@ -59,7 +59,6 @@ class App extends Component {
       this.props.contract.releaseCount()
       .then(num => {
         let count = num.toNumber();
-        console.log(count)
 
         // iterate through all releases using the total count provided
         for(let i = 0; i < count; i++){

@@ -18,13 +18,13 @@ class NewReleasePage extends Component {
   handleUploader = (e) => {
     console.log(e)
     console.log(e.file)
-    console.log(e.target)
+    // dispatch action or how do I handle file hash?
   }
 
   render() {
     return (
       <div>
-        <NewReleaseForm idk={this.handleIDK} submit={this.handleSubmit} upload={this.handleUploader}/>
+        <NewReleaseForm submit={this.handleSubmit} upload={this.handleUploader}/>
       </div>
     );
   }
