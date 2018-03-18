@@ -37,52 +37,53 @@ const NewReleaseForm = ({ submit,
     onSubmit={(e) => submit(e, form)}>
 
     <Form.Item  {...formItemLayout} label="Artist">
-      {form.getFieldDecorator('artist')
+      {form.getFieldDecorator('artist name', {rules: [{required: true}]})
         (<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Release Title">
-      {form.getFieldDecorator('title')
+      {form.getFieldDecorator('title', {rules: [{required: true}]})
         (<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Artwork" extra="Your artwork will be resized to a square. Please make sure it is at least 300 pixels on all sides.">
-      <Upload
-        accept="image/*"
-        listType="picture-card"
-        multiple={false}
-        beforeUpload={() => false}
-        showUploadList={false}
-        onChange={setImage}
-        >
-          {artworkPreview ? <img
-            src={artworkPreview}
-            className="image-upload-preview"
-            alt="preview"
-            /> : "Click to upload."}
-
-      </Upload>
+      {form.getFieldDecorator('artwork', {rules: [{required: true}]})
+        (<Upload
+          accept="image/*"
+          listType="picture-card"
+          multiple={false}
+          beforeUpload={() => false}
+          showUploadList={false}
+          onChange={setImage}
+          >
+            {artworkPreview ? <img
+              src={artworkPreview}
+              className="image-upload-preview"
+              alt="preview"
+              /> : "Click to upload."}
+        </Upload>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Tracklisting">
-      {form.getFieldDecorator('tracklist')
+      {form.getFieldDecorator('tracklist', {rules: [{required: true}]})
         (<Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Description">
-      {form.getFieldDecorator('description')
+      {form.getFieldDecorator('description', {rules: [{required: true}]})
         (<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Music Upload" extra="MP3 files only.">
-      <Upload.Dragger
-        accept="audio/mp3"
-        multiple
-        onChange={setFileList}
-        beforeUpload={() => false}
-        >
-        <p className="ant-upload-text">Click or drag files to this area to upload.</p>
-      </Upload.Dragger>
+      {form.getFieldDecorator('music', {rules: [{required: true}]})
+        (<Upload.Dragger
+          accept="audio/mp3"
+          multiple
+          onChange={setFileList}
+          beforeUpload={() => false}
+          >
+          <p className="ant-upload-text">Click or drag files to this area to upload.</p>
+        </Upload.Dragger>)}
     </Form.Item>
 
     <Form.Item
@@ -93,7 +94,8 @@ const NewReleaseForm = ({ submit,
       {form.getFieldDecorator('price',
         {initialValue: "0.0000",
           rules: [
-            {validator: validatePrice}
+            {validator: validatePrice},
+            {required: true}
           ]
         })
         (<Input size="large" addonAfter="ETH" onChange={calculateUSD}/>)}
