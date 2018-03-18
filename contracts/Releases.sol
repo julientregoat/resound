@@ -9,10 +9,15 @@ contract Releases {
   }
 
   struct Release {
+    uint id;
     address artist;
     string artistName;
     string title;
-    uint id;
+    string description;
+    string tracklist;
+    uint64 price;
+    string artwork;
+    byte[46][] files;
   }
 
   event NewRelease(address artist, string title, string artistName);
@@ -20,10 +25,10 @@ contract Releases {
   mapping (address => uint) balance;
 
 
-  function createRelease(string _artist, string _title) public {
+  function createRelease(string _artistName, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[46][] _files) public {
     uint id = releases.length - 1;
-    releases.push(Release(msg.sender,_artist, _title, id));
-    NewRelease(msg.sender, _title, _artist);
+    releases.push(Release(id, msg.sender, _artistName, _title, _description, _tracklist, _price, _artwork, _files));
+    NewRelease(msg.sender, _title, _artistName);
   }
 
   function purchaseRelease(uint id) public payable {

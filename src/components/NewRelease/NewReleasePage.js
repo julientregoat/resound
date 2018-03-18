@@ -50,17 +50,25 @@ class NewReleasePage extends Component {
     }
   }
 
+  createRelease = () => {
+
+  }
+
   handleSubmit = (e, form) => {
     // only upload the last image!
     // or add a 'current photo' to state for previews
     // store images as base64 in IPFS
+
     e.preventDefault()
     form.validateFields((err, values) => {
+      console.log(this.props.contract)
+      console.log(values)
       if (err){
-        message.error('Please check your data and try again.')
-      } else {
-        message.success('Being submitted!')
+        return message.error('Please check your data and try again.')
       }
+      message.success('yay!')
+      this.props.contract.createRelease(values.artist, values.title, values.description, values.tracklist, values.price, "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", ["QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh"])
+      .then(console.log)
     })
     // this.props.isUploading()
     // this.uploadFiles()

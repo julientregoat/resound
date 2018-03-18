@@ -96,7 +96,8 @@ class App extends Component {
     this.setupWeb3()
     this.setupIPFS()
     this.getUserInfo()
-    // make the releases only for the Home page
+
+    // change fetch releases only for the Home page later
     this.getReleases()
   }
 

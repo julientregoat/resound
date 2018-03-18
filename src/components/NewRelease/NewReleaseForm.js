@@ -37,7 +37,7 @@ const NewReleaseForm = ({ submit,
     onSubmit={(e) => submit(e, form)}>
 
     <Form.Item  {...formItemLayout} label="Artist">
-      {form.getFieldDecorator('artist name', {rules: [{required: true}]})
+      {form.getFieldDecorator('artist', {rules: [{required: true}]})
         (<Input size="large"/>)}
     </Form.Item>
 
