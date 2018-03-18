@@ -12,13 +12,13 @@ class NewReleasePage extends Component {
   }
 
   handleIDK = (e) => {
-    console.log("hi", e)
+    console.log("upload single file", e)
   }
 
   handleUploader = (e) => {
     console.log(e)
     console.log(e.file)
-    console.log(e.file.status)
+    console.log(e.target)
   }
 
   render() {

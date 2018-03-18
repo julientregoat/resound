@@ -5,13 +5,13 @@ import { Form, Input, Button, Upload } from 'antd';
 const formItemLayout = {
   labelCol: {
     xs: {
-      span: 2,
-      offset: 8
+      span: 3,
+      offset: 5
     }
   },
   wrapperCol: {
     xs: {
-      span: 5
+      span: 8
     },
   },
 };
@@ -19,13 +19,13 @@ const formItemLayout = {
 const uploadItemLayout = {
   wrapperCol: {
     xs: {
-      span: 5,
+      span: 8,
       offset: 10
     },
   }
-}
+};
 
-const NewReleaseForm = ({submit, upload, idk}) => (
+const NewReleaseForm = ({ submit, upload }) => (
 
   <Form onSubmit={submit}>
 
@@ -37,28 +37,31 @@ const NewReleaseForm = ({submit, upload, idk}) => (
       <Input size="large"/>
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="Tracklist">
-      <Input size="large"/>
-      <Input size="large"/>
-      <Input size="large"/>
-      <Input size="large"/>
+    <Form.Item  {...formItemLayout} label="Tracklisting">
+      <Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>
     </Form.Item>
 
-    <Form.Item  {...uploadItemLayout} >
+    <Form.Item  {...formItemLayout} label="Description">
+      <Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>
+    </Form.Item>
+
+    <Form.Item  {...formItemLayout} label="File Upload">
       <Upload.Dragger
+        accept="audio/mp3"
         multiple
-        customRequest={idk}
+        customRequest={upload}
+        data={upload}
       >
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-        <p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
+        <p className="ant-upload-text">Click or drag files to this area to upload.</p>
+        <p className="ant-upload-hint">MP3 files only.</p>
       </Upload.Dragger>
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="Cost">
-      <Input size="large"/>
+    <Form.Item  {...formItemLayout} label="Price">
+      <Input size="large" addonAfter="ETH"/>
     </Form.Item>
 
-    <Form.Item {...formItemLayout} label="Submit">
+    <Form.Item {...uploadItemLayout}>
       <Button type="primary" htmlType="submit">
         Submit New Release
       </Button>

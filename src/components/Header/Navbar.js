@@ -2,7 +2,7 @@ import React from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
-const NavBar = ({}) => (
+const NavBar = () => (
   <Menu mode="horizontal">
     <Menu.Item><Link to="/" className="menu-item">Home</Link></Menu.Item>
     <Menu.Item><Link to="/me" className="menu-item">Account</Link></Menu.Item>

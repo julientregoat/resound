@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Row, Col } from 'antd';
 
 import Header from './components/Header/Header';
 import HomePage from './components/Home/HomePage';
@@ -14,6 +13,7 @@ import { connect } from 'react-redux'
 import { setWeb3 } from './actions/web3Actions'
 import { setUser } from './actions/userActions'
 import { setReleases } from './actions/releasesActions'
+import { setUSDPrice } from './actions/siteActions'
 
 import injectWeb3 from 'react-web3-hoc';
 import contract from 'truffle-contract';
@@ -63,11 +63,21 @@ class App extends Component {
 
         // iterate through all releases using the total count provided
         for(let i = 0; i < count; i++){
-          this.props.contract.releaseInfo(i).then(console.log)
+          // this.props.contract.releaseInfo(i).then(console.log)
         }
       })
       // solidity getRelease return values => {artist: res[0], title: res[1], id: i, address: res[2]}
     }
+  }
+
+  getEthPrice = () => {
+    fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
+    .then(res => res.json())
+    .then(json => this.props.setUSDPrice(json[0].price_usd))
+  }
+
+  componentDidMount(){
+    this.getEthPrice()
   }
 
   componentDidUpdate(){
@@ -84,6 +94,7 @@ class App extends Component {
           <Route exact path="/" component={HomePage}/>
           <Route path="/me" component={AccountPage}/>
           <Route path="/new" component={NewReleasePage}/>
+          <Redirect to="/" />
         </Switch>
       </div>
     );
@@ -94,6 +105,7 @@ const mapStateToProps = state => ({
   w3: state.web3.instance,
   contract:state.web3.contract,
   user: state.user,
-  releases: state.releases
+  releases: state.releases,
+  USDPrice: state.site.USDPrice
 })
-export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setReleases }), injectWeb3())(App)
+export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setReleases, setUSDPrice }), injectWeb3())(App)

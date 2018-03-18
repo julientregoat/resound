@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux'
 
 import Navbar from './Navbar'
-import { Row, Col } from 'antd';
+import { Row } from 'antd';
 
 const Header = ({ user }) => (
-  <div>
+  <div className="header">
     <Row type="flex" justify="center"><h1> bitcamp </h1></Row>
 
     <Row type="flex" justify="space-between" className="header-row">
