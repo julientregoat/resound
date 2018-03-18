@@ -50,13 +50,20 @@ class NewReleasePage extends Component {
     }
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = (e, form) => {
     // only upload the last image!
     // or add a 'current photo' to state for previews
     // store images as base64 in IPFS
     e.preventDefault()
-    this.props.isUploading()
-    this.uploadFiles()
+    form.validateFields((err, values) => {
+      if (err){
+        message.error('Please check your data and try again.')
+      } else {
+        message.success('Being submitted!')
+      }
+    })
+    // this.props.isUploading()
+    // this.uploadFiles()
   }
 
   setFileList = (fileInfo) => {

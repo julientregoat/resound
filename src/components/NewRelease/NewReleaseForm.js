@@ -34,14 +34,16 @@ const NewReleaseForm = ({ submit,
                           calculateUSD,
                           validatePrice }) => (
   <Form
-    onSubmit={submit}>
+    onSubmit={(e) => submit(e, form)}>
 
     <Form.Item  {...formItemLayout} label="Artist">
-      {form.getFieldDecorator('artist')(<Input size="large"/>)}
+      {form.getFieldDecorator('artist')
+        (<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Release Title">
-      {form.getFieldDecorator('title')(<Input size="large"/>)}
+      {form.getFieldDecorator('title')
+        (<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Artwork" extra="Your artwork will be resized to a square. Please make sure it is at least 300 pixels on all sides.">
@@ -63,11 +65,13 @@ const NewReleaseForm = ({ submit,
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Tracklisting">
-      {form.getFieldDecorator('tracklist')(<Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>)}
+      {form.getFieldDecorator('tracklist')
+        (<Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Description">
-      {form.getFieldDecorator('description')(<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
+      {form.getFieldDecorator('description')
+        (<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Music Upload" extra="MP3 files only.">
@@ -76,7 +80,7 @@ const NewReleaseForm = ({ submit,
         multiple
         onChange={setFileList}
         beforeUpload={() => false}
-      >
+        >
         <p className="ant-upload-text">Click or drag files to this area to upload.</p>
       </Upload.Dragger>
     </Form.Item>
