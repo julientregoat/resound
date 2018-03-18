@@ -77,12 +77,14 @@ class App extends Component {
   }
 
   componentDidMount(){
-    this.getEthPrice()
+    // checking price once a minute
+    setInterval(this.getEthPrice,60000)
   }
 
   componentDidUpdate(){
     this.setupWeb3()
     this.getUserInfo()
+    // make the releases only for the Home page
     this.getReleases()
   }
 
