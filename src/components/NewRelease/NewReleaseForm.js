@@ -25,7 +25,7 @@ const uploadItemLayout = {
   }
 };
 
-const NewReleaseForm = ({ submit, setFileList, form }) => (
+const NewReleaseForm = ({ submit, setFileList, setImage, artworkPreview, form }) => (
   <Form
     onSubmit={submit}>
 
@@ -35,6 +35,24 @@ const NewReleaseForm = ({ submit, setFileList, form }) => (
 
     <Form.Item  {...formItemLayout} label="Release Title">
       {form.getFieldDecorator('title')(<Input size="large"/>)}
+    </Form.Item>
+
+    <Form.Item  {...formItemLayout} label="Artwork" extra="Your artwork will be resized to a square. Please make sure it is at least 300 pixels on all sides.">
+      <Upload
+        accept="image/*"
+        listType="picture-card"
+        multiple={false}
+        beforeUpload={() => false}
+        showUploadList={false}
+        onChange={setImage}
+        >
+          {artworkPreview ? <img
+            src={artworkPreview}
+            className="image-upload-preview"
+            alt="preview"
+            /> : "Click to upload."}
+
+      </Upload>
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Tracklisting">

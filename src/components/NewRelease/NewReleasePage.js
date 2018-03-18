@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setUploaderFileList, isUploading, isNotUploading } from '../../actions/siteActions'
+import { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview } from '../../actions/siteActions'
 
 import { Spin, message } from 'antd'
 import NewReleaseForm from './NewReleaseForm'
@@ -11,7 +11,19 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 
 class NewReleasePage extends Component {
 
+  getBase64(img) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      this.props.setArtworkPreview(reader.result)
+    }
+    reader.readAsDataURL(img);
+  }
+
   uploadFiles = () => {
+
+    // only upload the last image!
+    // or add a 'current photo' to state for previews
+    
     let fileCount = this.props.uploader.files.length;
 
     for(let i=0; i < fileCount; i++){
@@ -35,8 +47,13 @@ class NewReleasePage extends Component {
     this.uploadFiles()
   }
 
-  setFileList = (e) => {
-    this.props.setUploaderFileList(e.fileList)
+  setFileList = (fileInfo) => {
+    this.props.setUploaderFileList(fileInfo.fileList)
+  }
+
+  setImage = (fileInfo) => {
+    console.log(fileInfo)
+    this.getBase64(fileInfo.file)
   }
 
   render() {
@@ -46,7 +63,12 @@ class NewReleasePage extends Component {
         tip="Uploading release..."
         spinning={this.props.uploader.uploading}
       >
-        <NewReleaseForm submit={this.handleSubmit} setFileList={this.setFileList}/>
+        <NewReleaseForm
+          submit={this.handleSubmit}
+          setFileList={this.setFileList}
+          setImage={this.setImage}
+          artworkPreview={this.props.uploader.artworkPreview}
+          />
       </Spin>
     );
   }
@@ -58,4 +80,4 @@ const mapStateToProps = state => ({
   uploader: state.site.uploader
 })
 
-export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading })(NewReleasePage);
+export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview })(NewReleasePage);

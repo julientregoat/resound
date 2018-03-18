@@ -20,4 +20,15 @@ const isNotUploading = () => ({
   type: 'IS_NOT_UPLOADING'
 })
 
-export { setUSDPrice, setUploaderFileList, isUploading, isNotUploading }
+const setArtworkPreview = (base64Img) => ({
+  type: 'SET_ARTWORK_PREVIEW',
+  payload: {
+    artworkPreview: base64Img
+  }
+})
+
+export { setUSDPrice,
+        setUploaderFileList,
+        isUploading,
+        isNotUploading,
+        setArtworkPreview }

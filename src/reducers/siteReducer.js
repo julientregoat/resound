@@ -2,11 +2,13 @@ const initialState = {
   USDPrice: 0,
   uploader: {
     uploading: false,
-    files: []
+    files: [],
+    artworkPreview: null
   }
 }
 
 export default (state = initialState, action) => {
+  console.log(state)
   switch(action.type){
     case 'SET_USD_PRICE':
       return {
@@ -37,11 +39,20 @@ export default (state = initialState, action) => {
           uploading: false
         }
       }
+    case 'SET_ARTWORK_PREVIEW':
+      return {
+        ...state,
+        uploader: {
+          ...state.uploader,
+          artworkPreview: action.payload.artworkPreview
+        }
+      }
     case 'RESET_FILES':
      return {
        ...state,
        uploader: {
-         ...state.uploader,
+         uploading: false,
+         artworkPreview: null,
          files: []
        }
      }

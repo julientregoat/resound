@@ -21,3 +21,8 @@
 .menu-item {
   margin-right: 30px;
 }
+
+.image-upload-preview {
+  height: 300px !important;
+  width: 300px !important;
+}
