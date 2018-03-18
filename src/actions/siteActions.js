@@ -5,6 +5,13 @@ const setUSDPrice = (price) => ({
   }
 })
 
+const setUSDConversion = (price) => ({
+  type: 'SET_USD_CONVERSION',
+  payload: {
+    usd: price
+  }
+})
+
 const setUploaderFileList = (filelist) => ({
   type: 'SET_FILE_LIST',
   payload: {
@@ -31,4 +38,5 @@ export { setUSDPrice,
         setUploaderFileList,
         isUploading,
         isNotUploading,
-        setArtworkPreview }
+        setArtworkPreview,
+        setUSDConversion }

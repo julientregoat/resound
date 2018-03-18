@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview } from '../../actions/siteActions'
+import { setUploaderFileList,
+         isUploading,
+         isNotUploading,
+         setArtworkPreview,
+         setUSDConversion } from '../../actions/siteActions'
 
 import { Spin, message } from 'antd'
 import NewReleaseForm from './NewReleaseForm'
@@ -12,7 +16,7 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 class NewReleasePage extends Component {
 
   calculateUSD = (e) => {
-    // console.log(e.target.value)
+    this.props.setUSDConversion(e.target.value * this.props.USDPrice)
   }
 
   validatePrice = (rule, value, callback) => {
@@ -76,7 +80,7 @@ class NewReleasePage extends Component {
           setFileList={this.setFileList}
           setImage={this.setImage}
           artworkPreview={this.props.uploader.artworkPreview}
-          USDConversion={this.props.USDPrice}
+          USDConversion={this.props.USDConversion}
           calculateUSD={this.calculateUSD}
           validatePrice={this.validatePrice}
           />
@@ -89,7 +93,8 @@ class NewReleasePage extends Component {
 const mapStateToProps = state => ({
   contract: state.web3.contract,
   uploader: state.site.uploader,
-  USDPrice: state.site.USDPrice
+  USDPrice: state.site.USDPrice,
+  USDConversion: state.site.uploader.USDConversion
 })
 
-export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview })(NewReleasePage);
+export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview, setUSDConversion })(NewReleasePage);

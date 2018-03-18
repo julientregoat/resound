@@ -3,7 +3,8 @@ const initialState = {
   uploader: {
     uploading: false,
     files: [],
-    artworkPreview: null
+    artworkPreview: null,
+    USDConversion: 0
   }
 }
 
@@ -13,6 +14,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         USDPrice: action.payload.usd
+      }
+    case 'SET_USD_CONVERSION':
+      return {
+        ...state,
+        uploader: {
+          ...state.uploader,
+          USDConversion: action.payload.usd
+        }
       }
     case 'SET_FILE_LIST':
       return {
