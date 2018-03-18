@@ -26,6 +26,11 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 
 class App extends Component {
 
+  constructor(){
+    super()
+    this.getEthPrice()
+  }
+
   setupWeb3 = () => {
     // handle changing of metamask instance?
     // looks like polling at interval is the only answer
@@ -84,7 +89,7 @@ class App extends Component {
 
   componentDidMount(){
     // checking price once a minute
-    setInterval(this.getEthPrice,60000)
+    setInterval(this.getEthPrice, 60000)
   }
 
   componentDidUpdate(){

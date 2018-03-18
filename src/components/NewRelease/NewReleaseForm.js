@@ -25,7 +25,7 @@ const uploadItemLayout = {
   }
 };
 
-const NewReleaseForm = ({ submit, setFileList, setImage, artworkPreview, form }) => (
+const NewReleaseForm = ({ submit, setFileList, setImage, artworkPreview, form, USDConversion, calculateUSD, validatePrice }) => (
   <Form
     onSubmit={submit}>
 
@@ -74,8 +74,12 @@ const NewReleaseForm = ({ submit, setFileList, setImage, artworkPreview, form })
       </Upload.Dragger>
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="Price">
-      {form.getFieldDecorator('price')(<Input size="large" addonAfter="ETH"/>)}
+    <Form.Item
+      {...formItemLayout}
+      label="Price"
+      extra={USDConversion}
+      >
+      {form.getFieldDecorator('price', {rules: [{validator: validatePrice}]})(<Input size="large" addonAfter="ETH" onChange={calculateUSD}/>)}
     </Form.Item>
 
     <Form.Item {...uploadItemLayout}>

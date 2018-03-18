@@ -11,6 +11,14 @@ const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 
 class NewReleasePage extends Component {
 
+  calculateUSD = (e) => {
+    // console.log(e.target.value)
+  }
+
+  validatePrice = (rule, value, callback) => {
+    isNaN(parseInt(value)) ? callback("Must be a number!") : callback()
+  }
+
   getBase64(img) {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -68,6 +76,9 @@ class NewReleasePage extends Component {
           setFileList={this.setFileList}
           setImage={this.setImage}
           artworkPreview={this.props.uploader.artworkPreview}
+          USDConversion={this.props.USDPrice}
+          calculateUSD={this.calculateUSD}
+          validatePrice={this.validatePrice}
           />
       </Spin>
     );
@@ -77,7 +88,8 @@ class NewReleasePage extends Component {
 
 const mapStateToProps = state => ({
   contract: state.web3.contract,
-  uploader: state.site.uploader
+  uploader: state.site.uploader,
+  USDPrice: state.site.USDPrice
 })
 
 export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview })(NewReleasePage);
