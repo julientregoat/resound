@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 class HomePage extends Component {
 
   render() {
-    this.props.ipfs.files
-    .then(console.log)
     return (
       <div>
         Home Page

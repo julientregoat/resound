@@ -31,11 +31,21 @@ class NewReleasePage extends Component {
     reader.readAsDataURL(img);
   }
 
-  createRelease = (fileInfo) => {
-    console.log(fileInfo)
+  createRelease = (tracklist, values) => {
+    console.log(tracklist, values)
+    // this.props.contract.createRelease(values.artist,
+    //                                   values.title,
+    //                                   values.description,
+    //                                   values.tracklist,
+    //                                   values.price,
+    //                                   "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh",
+    //                                   tracklist,
+    //                                   {from: this.props.user.wallet})
+    // .then(console.log)
+    // this.props.isUploading()
   }
 
-  upload = () => {
+  uploadIPFS = (values) => {
     // need to limit filename of release tracks.
     // 120 byte limit, 46b hash, 1b '/', 4b '.mp3'
     // 69 bytes left for the actual filename
@@ -44,7 +54,6 @@ class NewReleasePage extends Component {
 
     // need to handle truncating filenames
     let fileList = this.props.uploader.files
-    console.log(fileList)
     let fileCount = fileList.length - 1
     let files = []
 
@@ -56,8 +65,10 @@ class NewReleasePage extends Component {
         buffer = Buffer.from(reader.result)
 
         ipfs.files.add({content: buffer}).then(result => {
-          files.push(result[0].hash + "/" + fileList[i].name)
-          i === fileCount ? this.createRelease(files) : null
+          // converting to buffer here so it translates back correctly
+          // should be able to split by the slash since nothing else should have a slice.
+          files.push(Buffer.from(result[0].hash + "/" + fileList[i].name))
+          i === fileCount ? this.createRelease(files, values) : null
         })
       }
 
@@ -72,22 +83,12 @@ class NewReleasePage extends Component {
 
     e.preventDefault()
     form.validateFields((err, values) => {
-      console.log(this.props.contract)
       console.log(values)
       if (err){
         // return message.error('Please check your data and try again.')
       }
       message.success('Submitted!')
-      // this.props.contract.createRelease(values.artist,
-      //                                   values.title,
-      //                                   values.description,
-      //                                   values.tracklist,
-      //                                   values.price,
-      //                                   "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", [Buffer.from("QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh")],
-      //                                   {from: this.props.user.wallet})
-      // .then(console.log)
-      // this.props.isUploading()
-      this.upload()
+      this.uploadIPFS(values)
     })
   }
 
