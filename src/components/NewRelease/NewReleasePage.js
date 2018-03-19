@@ -31,24 +31,37 @@ class NewReleasePage extends Component {
     reader.readAsDataURL(img);
   }
 
-  upload = (release_title) => {
-    // SO - I need to handle a limit on the length of release.
+  createRelease = (fileInfo) => {
+    console.log(fileInfo)
+  }
+
+  upload = () => {
+    // need to limit filename of release tracks.
     // 120 byte limit, 46b hash, 1b '/', 4b '.mp3'
     // 69 bytes left for the actual filename
 
-    // upload images here as well
-    let fileCount = this.props.uploader.files.length;
-    // can refactor with forEach?
-    for(let i=0; i < fileCount; i++){
+    // need to upload images here as well
+
+    // need to handle truncating filenames
+    let fileList = this.props.uploader.files
+    console.log(fileList)
+    let fileCount = fileList.length - 1
+    let files = []
+
+    for(let i=0; i <= fileCount; i++){
+
       let reader = new FileReader();
-      let file = this.props.uploader.files[i]
 
       reader.onloadend = () => {
         buffer = Buffer.from(reader.result)
-        ipfs.files.add({content: buffer}).then(console.log)
-        // for purposes of storing in solidity, should create
+
+        ipfs.files.add({content: buffer}).then(result => {
+          files.push(result[0].hash + "/" + fileList[i].name)
+          i === fileCount ? this.createRelease(files) : null
+        })
       }
-      let buffer = reader.readAsArrayBuffer(file)
+
+      let buffer = reader.readAsArrayBuffer(fileList[i])
     }
   }
 
@@ -74,7 +87,7 @@ class NewReleasePage extends Component {
       //                                   {from: this.props.user.wallet})
       // .then(console.log)
       // this.props.isUploading()
-      this.upload(values.title)
+      this.upload()
     })
   }
 

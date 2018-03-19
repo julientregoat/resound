@@ -51,7 +51,7 @@ contract Releases {
     return (releases[_id].artist, releases[_id].artistName, releases[_id].title, releases[_id].description, releases[_id].tracklist);
   }
 
-  function releaseContent(uint _id) public view returns (uint64, string, byte[46][]){
+  function releaseContent(uint _id) public view returns (uint64, string, byte[120][]){
     return (releases[_id].price, releases[_id].artwork, releases[_id].files);
   }
 

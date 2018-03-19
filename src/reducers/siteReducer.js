@@ -12,7 +12,6 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  console.log(state, action)
   switch(action.type){
     case 'SET_USD_PRICE':
       return {
