@@ -32,29 +32,24 @@ class NewReleasePage extends Component {
   }
 
   upload = (release_title) => {
+    // SO - I need to handle a limit on the length of release.
+    // 120 byte limit, 46b hash, 1b '/', 4b '.mp3'
+    // 69 bytes left for the actual filename
+
     // upload images here as well
     let fileCount = this.props.uploader.files.length;
-    let files = [];
-    ipfs.files.mkdir('/' + release_title)
     // can refactor with forEach?
     for(let i=0; i < fileCount; i++){
       let reader = new FileReader();
       let file = this.props.uploader.files[i]
-      // might need to get DIR path first before uploading files?
-      let path = "/" + release_title + "/" + file.name
 
       reader.onloadend = () => {
         buffer = Buffer.from(reader.result)
-        files.push({path: path, content: buffer})
-        // ipfs.files.mkdir("/" + release_title)
-        ipfs.files.write(path, buffer, {create: true}).then(console.log)
+        ipfs.files.add({content: buffer}).then(console.log)
+        // for purposes of storing in solidity, should create
       }
       let buffer = reader.readAsArrayBuffer(file)
     }
-  }
-
-  createRelease = () => {
-
   }
 
   handleSubmit = (e, form) => {

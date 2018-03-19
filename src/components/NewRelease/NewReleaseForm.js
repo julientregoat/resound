@@ -74,7 +74,7 @@ const NewReleaseForm = ({ submit,
         {rules: [{required: true}]})(<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="Music Upload" extra="MP3 files only.">
+    <Form.Item  {...formItemLayout} label="Music Upload" extra="MP3 files only. 70 character limit on filenames, including '.mp3'. Anything over will be truncated. Filenames will remain the same when a user purchases your release.">
       {form.getFieldDecorator('music',
           {rules: [{required: true}]})(
           <Upload.Dragger

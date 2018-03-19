@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 class HomePage extends Component {
 
   render() {
-    this.props.ipfs.ls("QmeuZPWmrR3BNTntAZapxYFc5d2aLwLhL7XSY5fhYBD3Ku").then(console.log)
+    this.props.ipfs.files
+    .then(console.log)
     return (
       <div>
         Home Page

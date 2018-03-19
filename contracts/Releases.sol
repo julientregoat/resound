@@ -20,7 +20,7 @@ contract Releases {
     string tracklist;
     uint64 price;
     string artwork;
-    byte[46][] files;
+    byte[120][] files;
   }
 
   event NewRelease(address artist, string title, string artistName);
@@ -28,7 +28,7 @@ contract Releases {
   mapping (address => uint) balance;
 
 
-  function createRelease(string _artistName, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[46][] _files) public {
+  function createRelease(string _artistName, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[120][] _files) public {
     uint id = releases.length - 1;
     releases.push(Release(id, msg.sender, _artistName, _title, _description, _tracklist, _price, _artwork, _files));
     NewRelease(msg.sender, _title, _artistName);
