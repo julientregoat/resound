@@ -2,7 +2,7 @@ const ipfs = require('ipfs-api')({host: 'localhost', port: '5001', protocol: 'ht
 
 const initialState = {
   USDPrice: 0,
-  IPFS: ipfs,
+  ipfs: ipfs,
   uploader: {
     uploading: false,
     files: [],
@@ -71,7 +71,7 @@ export default (state = initialState, action) => {
      case 'SET_IPFS':
       return {
         ...state,
-        IPFS: action.payload.ipfs
+        ipfs: action.payload.ipfs
       }
     default:
       return state;

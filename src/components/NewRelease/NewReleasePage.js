@@ -34,20 +34,21 @@ class NewReleasePage extends Component {
   upload = (release_title) => {
     // upload images here as well
     let fileCount = this.props.uploader.files.length;
-
+    let files = [];
+    ipfs.files.mkdir('/' + release_title)
+    // can refactor with forEach?
     for(let i=0; i < fileCount; i++){
       let reader = new FileReader();
       let file = this.props.uploader.files[i]
-      let path = release_title + "/" + file.name
+      // might need to get DIR path first before uploading files?
+      let path = "/" + release_title + "/" + file.name
 
       reader.onloadend = () => {
         buffer = Buffer.from(reader.result)
-        ipfs.files.add({path: path, content: buffer}).then(res => {
-          console.log(res)
-          message.success((i + 1) + " of "+ fileCount + " files uploaded")
-        })
+        files.push({path: path, content: buffer})
+        // ipfs.files.mkdir("/" + release_title)
+        ipfs.files.write(path, buffer, {create: true}).then(console.log)
       }
-
       let buffer = reader.readAsArrayBuffer(file)
     }
   }

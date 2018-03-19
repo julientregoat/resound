@@ -38,7 +38,7 @@ const setArtworkPreview = (base64Img) => ({
 const setIPFS = (instance) => ({
   type: 'SET_IPFS',
   payload: {
-    IPFS: instance
+    ipfs: instance
   }
 })
 

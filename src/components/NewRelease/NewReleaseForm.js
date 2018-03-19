@@ -37,18 +37,18 @@ const NewReleaseForm = ({ submit,
     onSubmit={(e) => submit(e, form)}>
 
     <Form.Item  {...formItemLayout} label="Artist">
-      {form.getFieldDecorator('artist', {rules: [{required: true}]})
-        (<Input size="large"/>)}
+      {form.getFieldDecorator('artist',
+        {rules: [{required: true}]})(<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Release Title">
-      {form.getFieldDecorator('title', {rules: [{required: true}]})
-        (<Input size="large"/>)}
+      {form.getFieldDecorator('title',
+        {rules: [{required: true}]})(<Input size="large"/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Artwork" extra="Your artwork will be resized to a square. Please make sure it is at least 300 pixels on all sides.">
-      {form.getFieldDecorator('artwork', {rules: [{required: true}]})
-        (<Upload
+      {form.getFieldDecorator('artwork', {rules: [{required: true}]})(
+          <Upload
           accept="image/*"
           listType="picture-card"
           multiple={false}
@@ -65,18 +65,19 @@ const NewReleaseForm = ({ submit,
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Tracklisting">
-      {form.getFieldDecorator('tracklist', {rules: [{required: true}]})
-        (<Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>)}
+      {form.getFieldDecorator('tracklist',
+        {rules: [{required: true}]})(<Input.TextArea autosize={{minRows: 4, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Description">
-      {form.getFieldDecorator('description', {rules: [{required: true}]})
-        (<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
+      {form.getFieldDecorator('description',
+        {rules: [{required: true}]})(<Input.TextArea autosize={{minRows: 6, maxRows: 20}}/>)}
     </Form.Item>
 
     <Form.Item  {...formItemLayout} label="Music Upload" extra="MP3 files only.">
-      {form.getFieldDecorator('music', {rules: [{required: true}]})
-        (<Upload.Dragger
+      {form.getFieldDecorator('music',
+          {rules: [{required: true}]})(
+          <Upload.Dragger
           accept="audio/mp3"
           multiple
           onChange={setFileList}
@@ -97,8 +98,7 @@ const NewReleaseForm = ({ submit,
             {validator: validatePrice},
             {required: true}
           ]
-        })
-        (<Input size="large" addonAfter="ETH" onChange={calculateUSD}/>)}
+        })(<Input size="large" addonAfter="ETH" onChange={calculateUSD}/>)}
     </Form.Item>
 
     <Form.Item {...uploadItemLayout}>
