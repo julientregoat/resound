@@ -31,22 +31,24 @@ class NewReleasePage extends Component {
     reader.readAsDataURL(img);
   }
 
-  uploadFiles = () => {
-
+  upload = (release_title) => {
+    // upload images here as well
     let fileCount = this.props.uploader.files.length;
 
     for(let i=0; i < fileCount; i++){
       let reader = new FileReader();
+      let file = this.props.uploader.files[i]
+      let path = release_title + "/" + file.name
 
       reader.onloadend = () => {
         buffer = Buffer.from(reader.result)
-        ipfs.files.add({content: buffer}).then(res => {
+        ipfs.files.add({path: path, content: buffer}).then(res => {
           console.log(res)
           message.success((i + 1) + " of "+ fileCount + " files uploaded")
         })
       }
 
-      let buffer = reader.readAsArrayBuffer(this.props.uploader.files[i])
+      let buffer = reader.readAsArrayBuffer(file)
     }
   }
 
@@ -63,15 +65,21 @@ class NewReleasePage extends Component {
     form.validateFields((err, values) => {
       console.log(this.props.contract)
       console.log(values)
-      // if (err){
-      //   return message.error('Please check your data and try again.')
-      // }
-      // message.success('yay!')
-      this.props.contract.createRelease(values.artist, values.title, values.description, values.tracklist, values.price, "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", [Buffer.from("QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh")], {from: this.props.user.wallet})
-      .then(console.log)
+      if (err){
+        // return message.error('Please check your data and try again.')
+      }
+      message.success('Submitted!')
+      // this.props.contract.createRelease(values.artist,
+      //                                   values.title,
+      //                                   values.description,
+      //                                   values.tracklist,
+      //                                   values.price,
+      //                                   "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh", [Buffer.from("QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh")],
+      //                                   {from: this.props.user.wallet})
+      // .then(console.log)
+      // this.props.isUploading()
+      this.upload(values.title)
     })
-    // this.props.isUploading()
-    // this.uploadFiles()
   }
 
   setFileList = (fileInfo) => {

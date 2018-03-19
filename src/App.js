@@ -14,15 +14,10 @@ import { setWeb3 } from './actions/web3Actions'
 import { setUser } from './actions/userActions'
 import { setReleases } from './actions/releasesActions'
 import { setUSDPrice } from './actions/siteActions'
-import { setIPFS } from './'
 
 import injectWeb3 from 'react-web3-hoc';
 import contract from 'truffle-contract';
 import ReleasesInterface from './build/contracts/Releases.json';
-
-// do I need this if I have the IPFS api link?
-const ipfsAPI = require('ipfs-api');
-const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
 
 class App extends Component {
 
@@ -40,10 +35,6 @@ class App extends Component {
       releasesContract.setProvider(this.props.web3.currentProvider)
       releasesContract.deployed().then(instance => this.props.setWeb3(this.props.web3, instance))
     }
-  }
-
-  setupIPFS = () => {
-
   }
 
   // call this every time a transaction happens?
@@ -95,8 +86,8 @@ class App extends Component {
   }
 
   componentDidUpdate(){
+    // these are both being called twice on app start
     this.setupWeb3()
-    this.setupIPFS()
     this.getUserInfo()
 
     // change fetch releases only for the Home page later

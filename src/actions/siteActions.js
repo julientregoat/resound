@@ -34,9 +34,18 @@ const setArtworkPreview = (base64Img) => ({
   }
 })
 
+// wonder if I'll ever need this
+const setIPFS = (instance) => ({
+  type: 'SET_IPFS',
+  payload: {
+    IPFS: instance
+  }
+})
+
 export { setUSDPrice,
         setUploaderFileList,
         isUploading,
         isNotUploading,
         setArtworkPreview,
-        setUSDConversion }
+        setUSDConversion,
+        setIPFS }

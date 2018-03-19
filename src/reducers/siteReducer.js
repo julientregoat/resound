@@ -1,5 +1,8 @@
+const ipfs = require('ipfs-api')({host: 'localhost', port: '5001', protocol: 'http'});
+
 const initialState = {
   USDPrice: 0,
+  IPFS: ipfs,
   uploader: {
     uploading: false,
     files: [],
@@ -9,6 +12,7 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+  console.log(state, action)
   switch(action.type){
     case 'SET_USD_PRICE':
       return {
@@ -64,6 +68,11 @@ export default (state = initialState, action) => {
          files: []
        }
      }
+     case 'SET_IPFS':
+      return {
+        ...state,
+        IPFS: action.payload.ipfs
+      }
     default:
       return state;
   }
