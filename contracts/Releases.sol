@@ -40,7 +40,7 @@ contract Releases {
   function createRelease(string _artistName, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[120][] _files) public {
     uint id = releases.length - 1;
     releases.push(Release(id, msg.sender, _artistName, _title, _description, _tracklist, _price, _artwork, _files));
-    artistReleases[msg.sender].push(id)
+    artistReleases[msg.sender].push(id);
     NewRelease(msg.sender, _title, _artistName);
   }
 
@@ -61,8 +61,8 @@ contract Releases {
 
   /*  release info data calls */
 
-  function artistReleases() public view returns (uint[]) {
-    return artistReleases[msg.sender]
+  function getArtistReleases() public view returns (uint[]) {
+    return artistReleases[msg.sender];
   }
 
   function releaseInfo(uint _id) public view returns (address, string, string, string, string) {
