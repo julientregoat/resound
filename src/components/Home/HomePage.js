@@ -6,33 +6,50 @@ import { setReleases } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
+  fileBufferConversion = (bufferArray) => {
+    let fileList = []
+    bufferArray.forEach(bufferString => {
+      // the bufferString is an array of hex strings
+      // need to convert to a Buffer object to convert it into readable string
+      // each file is stored in a string with format '[IPFSfilehash]/[filename]'
+      let fileDetails = Buffer.from(bufferString).toString('utf8').split('/')
+      fileList.push({location: fileDetails[0], fileName: fileDetails[1]})
+    })
+    return fileList
+  }
+
   getReleases = () => {
-    if ( this.props.contract ){
+    if ( this.props.contract && this.props.releases.length == 0){
 
       this.props.contract.releaseCount()
       .then(num => {
         let count = num.toNumber();
         let releases = [];
 
-        console.log(count)
-
         // iterate through all releases using the total count provided
         for(let i = 0; i < count; i++){
-          // can use Promise.all here
-
-          Promise.all([this.props.contract.releaseInfo(i), this.props.contract.releaseContent(i)])
-          .then(console.log)
-          // this.props.contract.releaseInfo(i).then(console.log)
-          // this.props.contract.releaseContent(i).then(values =>{
-          //   console.log(Buffer.from(values[2][0]).toString('utf8'), values[0].toNumber(), values[2])
-          // })
+          Promise.all([
+            this.props.contract.releaseInfo(i),
+            this.props.contract.releaseContent(i)
+          ])
+          .then(release => {
+            releases.push({
+              id: i,
+              owner: release[0][0],
+              artist: release[0][1],
+              title: release[0][2],
+              description: release[0][3],
+              tracklist: release[0][4],
+              price: release[1][0].toNumber(),
+              artwork: release[1][1],
+              files: this.fileBufferConversion(release[1][2])
+            })
+          })
         }
-      })
-      // solidity
-      // releaseInfo return values => {address, artist, release title, description, tracklist}}
-      // releaseContent return values => {price, artwork, files}
-      // need to convert files using Buffer.from(values[2][i])
 
+        this.props.setReleases(releases)
+
+      })
     }
   }
 
@@ -42,10 +59,18 @@ class HomePage extends Component {
     this.getReleases()
   }
 
+  componentDidUpdate(){
+    // well this is messy. calls x4
+    // why won't this render when I go to the page initially?
+    this.getReleases()
+
+    // is calling a lot??? what's happening
+  }
+
   render() {
     return (
       <div>
-        <LatestReleases />
+        <LatestReleases releases={this.props.releases}/>
       </div>
     );
   }
@@ -54,7 +79,8 @@ class HomePage extends Component {
 
 const mapStateToProps = state => ({
   ipfs: state.site.ipfs,
-  contract: state.web3.contract
+  contract: state.web3.contract,
+  releases: state.site.releases
 })
 
 export default connect(mapStateToProps, { setReleases })(HomePage);

@@ -1,15 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
 
 import ReleaseCard from './ReleaseCard';
+import { Spin} from 'antd'
 
 const LatestReleases = ({ releases }) => (
-  <div>
-  </div>
+  <React.Fragment>
+    {releases.map(release => <ReleaseCard release={release} key={release.id}/>)}
+  </React.Fragment>
 );
 
-const mapStateToProps = state => ({
-  releases: state.site.releases
-})
-
-export default connect(mapStateToProps)(LatestReleases);
+export default LatestReleases;

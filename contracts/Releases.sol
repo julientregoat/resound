@@ -10,8 +10,8 @@ contract Releases {
 
   struct Release {
     uint id;
-    address artist;
-    string artistName;
+    address owner;
+    string artist;
     string title;
     string description;
     string tracklist;
@@ -24,10 +24,10 @@ contract Releases {
   mapping (address => uint) balance;
   mapping (address => uint[]) userPurchases;
   mapping (address => uint[]) artistReleases;
-  event NewRelease(address artist, string title, string artistName);
+  event NewRelease(address owner, string title, string artist);
 
   modifier onlyReleaseOwner(uint _id) {
-    require(releases[_id].artist == msg.sender);
+    require(releases[_id].owner == msg.sender);
     _;
   }
 
@@ -37,17 +37,17 @@ contract Releases {
     _;
   }
 
-  function createRelease(string _artistName, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[120][] _files) public {
+  function createRelease(string _artist, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[120][] _files) public {
     uint id = releases.length - 1;
-    releases.push(Release(id, msg.sender, _artistName, _title, _description, _tracklist, _price, _artwork, _files));
+    releases.push(Release(id, msg.sender, _artist, _title, _description, _tracklist, _price, _artwork, _files));
     artistReleases[msg.sender].push(id);
-    NewRelease(msg.sender, _title, _artistName);
+    NewRelease(msg.sender, _title, _artist);
   }
 
   /*  transaction calls */
 
   function purchaseRelease(uint _id) public payable verifyPayment(_id) {
-    balance[releases[_id].artist] = balance[releases[_id].artist] + msg.value;
+    balance[releases[_id].owner] = balance[releases[_id].owner] + msg.value;
     userPurchases[msg.sender].push(_id);
   }
 
@@ -66,7 +66,7 @@ contract Releases {
   }
 
   function releaseInfo(uint _id) public view returns (address, string, string, string, string) {
-    return (releases[_id].artist, releases[_id].artistName, releases[_id].title, releases[_id].description, releases[_id].tracklist);
+    return (releases[_id].owner, releases[_id].artist, releases[_id].title, releases[_id].description, releases[_id].tracklist);
   }
 
   function releaseContent(uint _id) public view returns (uint64, string, byte[120][]) {
