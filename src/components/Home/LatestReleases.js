@@ -1,12 +1,12 @@
 import React from 'react';
 
 import ReleaseCard from './ReleaseCard';
-import { Spin} from 'antd'
+import { Row, Spin } from 'antd'
 
 const LatestReleases = ({ releases }) => (
-  <React.Fragment>
+  <Row gutter={1} align="top" justify="start" type="flex">
     {releases.map(release => <ReleaseCard release={release} key={release.id}/>)}
-  </React.Fragment>
+  </Row>
 );
 
 export default LatestReleases;

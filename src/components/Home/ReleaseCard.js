@@ -3,9 +3,10 @@ import React from 'react';
 import { Card, Col } from 'antd';
 
 const ReleaseCard = ({ release }) => (
-  <Col span={6}>
+  <Col span={7}>
     <Card
       hoverable
+      style={{height: 400}}
       cover={<img alt="poop" src={release.artwork} />}
       title={release.title}
     >

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LatestReleases from './LatestReleases';
 
 import { connect } from 'react-redux';
-import { setReleases } from '../../actions/siteActions';
+import { addRelease } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
@@ -22,41 +22,45 @@ class HomePage extends Component {
     return fileList
   }
 
+  fetchReleaseInfo = id => {
+    if (this.props.releases.filter(release => release.id === id).length === 0){
+      Promise.all([
+        this.props.contract.releaseInfo(id),
+        this.props.contract.releaseContent(id)
+      ])
+      .then(release => {
+        this.props.ipfs.files.cat(release[1][1])
+        .then(artworkString => {
+          let releaseObj = {
+            id: id,
+            owner: release[0][0],
+            artist: release[0][1],
+            title: release[0][2],
+            description: release[0][3],
+            tracklist: release[0][4],
+            // converting price to correct number of decimals
+            price: this.fromMillietherBigNum(release[1][0]),
+            artwork: artworkString,
+            files: this.fileBufferConversion(release[1][2])
+          }
+          this.props.addRelease(releaseObj)
+        })
+        .catch(console.log)
+      })
+    }
+  }
+
   getReleases = () => {
-    if ( this.props.contract && this.props.releases.length === 0){
+    if ( this.props.contract ){
 
       this.props.contract.releaseCount()
       .then(num => {
+        // check total number of releases in smart contract and compare to number of releases in the store
         let count = num.toNumber();
-        let releases = [];
-
+        
         // iterate through all releases using the total count provided
-        for(let i = 0; i < count; i++){
-
-          Promise.all([
-            this.props.contract.releaseInfo(i),
-            this.props.contract.releaseContent(i)
-          ])
-          .then(release => {
-            this.props.ipfs.files.cat(release[1][1])
-            .then(artworkString => {
-              releases.push({
-                id: i,
-                owner: release[0][0],
-                artist: release[0][1],
-                title: release[0][2],
-                description: release[0][3],
-                tracklist: release[0][4],
-                // converting price to correct number of decimals
-                price: this.fromMillietherBigNum(release[1][0]),
-                artwork: artworkString,
-                files: this.fileBufferConversion(release[1][2])
-              })
-              // this should be better than doing it outside of the promises?
-              i === count - 1 ? this.props.setReleases(releases) : null
-            })
-            .catch(console.log)
-          })
+        for(let i = this.props.releases.length; i < count; i++){
+          this.fetchReleaseInfo(i)
         }
       })
     }
@@ -68,6 +72,7 @@ class HomePage extends Component {
   }
 
   componentDidUpdate(){
+    this.getReleases()
     console.log('hi')
   }
 
@@ -87,4 +92,4 @@ const mapStateToProps = state => ({
   releases: state.site.releases
 })
 
-export default connect(mapStateToProps, { setReleases })(HomePage);
+export default connect(mapStateToProps, { addRelease })(HomePage);

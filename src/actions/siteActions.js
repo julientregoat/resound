@@ -41,6 +41,13 @@ const setReleases = releases => ({
   }
 })
 
+const addRelease = release => ({
+  type: 'ADD_RELEASE',
+  payload: {
+    release: release
+  }
+})
+
 // wonder if I'll ever need this
 const setIPFS = (instance) => ({
   type: 'SET_IPFS',
@@ -56,4 +63,5 @@ export { setUSDPrice,
         setArtworkPreview,
         setUSDConversion,
         setReleases,
+        addRelease,
         setIPFS }

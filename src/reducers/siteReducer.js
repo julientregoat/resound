@@ -78,6 +78,16 @@ export default (state = initialState, action) => {
         ...state,
         releases: action.payload.releases
       }
+    case 'ADD_RELEASE':
+      // checking to see if a release with this ID already exists
+      if (state.releases.filter(release => release.id === action.payload.release.id).length !== 0){
+        return { ...state }
+      } else {
+        return {
+          ...state,
+          releases: [...state.releases, action.payload.release]
+        }
+      }
     default:
       return state;
   }
