@@ -60,16 +60,11 @@ class HomePage extends Component {
 
   componentDidMount(){
     // is this not rendering the first time because the contract isn't available?
-    // probably.
     this.getReleases()
   }
 
   componentDidUpdate(){
-    // well this is messy. calls x4
-    // why won't this render when I go to the page initially?
-    this.getReleases()
-
-    // is calling a lot??? what's happening
+    console.log('hi')
   }
 
   render() {

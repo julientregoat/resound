@@ -20,9 +20,16 @@ class NewReleasePage extends Component {
   }
 
   toMilliether = valueString => {
-    // comes in as a string. scrub down to 5 digits
-    let truncated = valueString.slice(0, 6)
-    let float = parseFloat(truncated)
+    let scrubbed = valueString
+
+    // comes in as a string. scrub down to 4 decimal places if there is one
+    if (valueString.include(".")){
+      let splitValues = valueString.split(".")
+      splitValues[1] = splitValues[1].slice(0,4)
+      scrubbed = splitValues.join(".")
+    }
+
+    let float = parseFloat(valueString)
     return float * 10000
   }
 
