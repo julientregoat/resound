@@ -34,6 +34,13 @@ const setArtworkPreview = (base64Img) => ({
   }
 })
 
+const setReleases = releases => ({
+  type: 'SET_ALL_RELEASES',
+  payload: {
+    releases: releases
+  }
+})
+
 // wonder if I'll ever need this
 const setIPFS = (instance) => ({
   type: 'SET_IPFS',
@@ -48,4 +55,5 @@ export { setUSDPrice,
         isNotUploading,
         setArtworkPreview,
         setUSDConversion,
+        setReleases,
         setIPFS }

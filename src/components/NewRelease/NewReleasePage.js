@@ -9,10 +9,6 @@ import { setUploaderFileList,
 import { Spin, message } from 'antd'
 import NewReleaseForm from './NewReleaseForm'
 
-const ipfsAPI = require('ipfs-api');
-const ipfs = ipfsAPI({host: 'localhost', port: '5001', protocol: 'http'});
-
-
 class NewReleasePage extends Component {
 
   calculateUSD = (e) => {
@@ -32,16 +28,16 @@ class NewReleasePage extends Component {
   }
 
   createRelease = (tracklist, values) => {
-    console.log(tracklist, values)
-    // this.props.contract.createRelease(values.artist,
-    //                                   values.title,
-    //                                   values.description,
-    //                                   values.tracklist,
-    //                                   values.price,
-    //                                   "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh",
-    //                                   tracklist,
-    //                                   {from: this.props.user.wallet})
-    // .then(console.log)
+    // console.log(tracklist, values)
+    this.props.contract.createRelease(values.artist,
+                                      values.title,
+                                      values.description,
+                                      values.tracklist,
+                                      values.price,
+                                      "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh",
+                                      tracklist,
+                                      {from: this.props.user.wallet})
+    .then(console.log)
     // this.props.isUploading()
   }
 
@@ -64,12 +60,12 @@ class NewReleasePage extends Component {
       reader.onloadend = () => {
         buffer = Buffer.from(reader.result)
 
-        ipfs.files.add({content: buffer}).then(result => {
+        this.props.ipfs.files.add({content: buffer}).then(result => {
           // converting to buffer here so it translates back correctly
           // should be able to split by the slash since nothing else should have a slice.
           files.push(Buffer.from(result[0].hash + "/" + fileList[i].name))
           i === fileCount ? this.createRelease(files, values) : null
-        })
+        }).catch(console.log)
       }
 
       let buffer = reader.readAsArrayBuffer(fileList[i])
@@ -80,7 +76,7 @@ class NewReleasePage extends Component {
     // only upload the last image!
     // or add a 'current photo' to state for previews
     // store images as base64 in IPFS
-
+    console.log(this.props.ipfs)
     e.preventDefault()
     form.validateFields((err, values) => {
       console.log(values)
@@ -128,7 +124,8 @@ const mapStateToProps = state => ({
   user: state.user,
   uploader: state.site.uploader,
   USDPrice: state.site.USDPrice,
-  USDConversion: state.site.uploader.USDConversion
+  USDConversion: state.site.uploader.USDConversion,
+  ipfs: state.site.ipfs
 })
 
 export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview, setUSDConversion })(NewReleasePage);

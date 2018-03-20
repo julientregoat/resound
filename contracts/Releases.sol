@@ -47,7 +47,7 @@ contract Releases {
     msg.sender.transfer(balance[msg.sender]);
   }
 
-  function releaseInfo(uint _id) public view returns (address _artist, string _artistName, string _title, string _description, string _tracklist) {
+  function releaseInfo(uint _id) public view returns (address, string, string, string, string) {
     return (releases[_id].artist, releases[_id].artistName, releases[_id].title, releases[_id].description, releases[_id].tracklist);
   }
 

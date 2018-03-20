@@ -12,7 +12,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { setWeb3 } from './actions/web3Actions'
 import { setUser } from './actions/userActions'
-import { setReleases } from './actions/releasesActions'
 import { setUSDPrice } from './actions/siteActions'
 
 import injectWeb3 from 'react-web3-hoc';
@@ -56,24 +55,6 @@ class App extends Component {
     }
   }
 
-  getReleases = () => {
-    if ( this.props.contract ){
-
-      this.props.contract.releaseCount()
-      .then(num => {
-        let count = num.toNumber();
-        console.log(count)
-        // iterate through all releases using the total count provided
-        for(let i = 0; i < count; i++){
-          // can use Promise.all here
-          this.props.contract.releaseInfo(i).then(console.log)
-          this.props.contract.releaseContent(i).then(values => console.log(Buffer.from(values[2][0]).toString('utf8')))
-        }
-      })
-      // solidity getRelease return values => {artist: res[0], title: res[1], id: i, address: res[2]}
-    }
-  }
-
   getEthPrice = () => {
     fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
     .then(res => res.json())
@@ -86,12 +67,9 @@ class App extends Component {
   }
 
   componentDidUpdate(){
-    // these are both being called twice on app start
+    // these are both being called twice on app start, fix that
     this.setupWeb3()
     this.getUserInfo()
-
-    // change fetch releases only for the Home page later
-    this.getReleases()
   }
 
   render() {
@@ -116,4 +94,4 @@ const mapStateToProps = state => ({
   releases: state.releases,
   USDPrice: state.site.USDPrice
 })
-export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setReleases, setUSDPrice }), injectWeb3())(App)
+export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setUSDPrice }), injectWeb3())(App)
