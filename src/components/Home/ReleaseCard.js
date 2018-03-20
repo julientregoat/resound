@@ -6,7 +6,7 @@ const ReleaseCard = ({ release }) => (
   <Col span={6}>
     <Card
       hoverable
-      cover={<img alt="poop" src="https://i.imgur.com/8ULSPxZ.jpg" />}
+      cover={<img alt="poop" src={release.artwork} />}
       title={release.title}
     >
     <Card.Meta

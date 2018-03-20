@@ -32,28 +32,32 @@ class HomePage extends Component {
 
         // iterate through all releases using the total count provided
         for(let i = 0; i < count; i++){
+
           Promise.all([
             this.props.contract.releaseInfo(i),
             this.props.contract.releaseContent(i)
           ])
           .then(release => {
-            releases.push({
-              id: i,
-              owner: release[0][0],
-              artist: release[0][1],
-              title: release[0][2],
-              description: release[0][3],
-              tracklist: release[0][4],
-              // converting price to correct number of decimals
-              price: this.fromMillietherBigNum(release[1][0]),
-              artwork: release[1][1],
-              files: this.fileBufferConversion(release[1][2])
+            this.props.ipfs.files.cat(release[1][1])
+            .then(artworkString => {
+              releases.push({
+                id: i,
+                owner: release[0][0],
+                artist: release[0][1],
+                title: release[0][2],
+                description: release[0][3],
+                tracklist: release[0][4],
+                // converting price to correct number of decimals
+                price: this.fromMillietherBigNum(release[1][0]),
+                artwork: artworkString,
+                files: this.fileBufferConversion(release[1][2])
+              })
+              // this should be better than doing it outside of the promises?
+              i === count - 1 ? this.props.setReleases(releases) : null
             })
+            .catch(console.log)
           })
         }
-
-        this.props.setReleases(releases)
-
       })
     }
   }
