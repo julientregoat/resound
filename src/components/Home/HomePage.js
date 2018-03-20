@@ -23,7 +23,7 @@ class HomePage extends Component {
   }
 
   getReleases = () => {
-    if ( this.props.contract && this.props.releases.length == 0){
+    if ( this.props.contract && this.props.releases.length === 0){
 
       this.props.contract.releaseCount()
       .then(num => {

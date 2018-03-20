@@ -23,13 +23,13 @@ class NewReleasePage extends Component {
     let scrubbed = valueString
 
     // comes in as a string. scrub down to 4 decimal places if there is one
-    if (valueString.include(".")){
+    if (valueString.includes(".")){
       let splitValues = valueString.split(".")
       splitValues[1] = splitValues[1].slice(0,4)
       scrubbed = splitValues.join(".")
     }
 
-    let float = parseFloat(valueString)
+    let float = parseFloat(scrubbed)
     return float * 10000
   }
 
@@ -41,17 +41,23 @@ class NewReleasePage extends Component {
     reader.readAsDataURL(img);
   }
 
-  createRelease = (tracklist, values) => {
-    // console.log(tracklist, values)
+  createRelease = (tracklistHashes, artworkHash, values) => {
     this.props.contract.createRelease(values.artist,
                                       values.title,
                                       values.description,
                                       values.tracklist,
                                       this.toMilliether(values.price),
-                                      "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh",
-                                      tracklist,
+                                      artworkHash,
+                                      tracklistHashes,
                                       {from: this.props.user.wallet})
-    .then(console.log)
+    .then(res => {
+      message.success('Release uploaded!')
+      // clear form here
+    })
+    .catch(res => {
+      message.error('There was an error uploading your release. Please try again.')
+      console.log("create release error", res)
+    })
     // this.props.isUploading()
   }
 
@@ -60,30 +66,35 @@ class NewReleasePage extends Component {
     // 120 byte limit, 46b hash, 1b '/', 4b '.mp3'
     // 69 bytes left for the actual filename
 
-    // need to upload images here as well
+    // uploading the image first
+    this.props.ipfs.files.add({content: Buffer.from(this.props.uploader.artworkPreview)})
+    .then(artwork => {
+      // need to handle truncating filenames
+      let fileList = this.props.uploader.files
+      let fileCount = fileList.length - 1
+      let files = []
 
-    // need to handle truncating filenames
-    let fileList = this.props.uploader.files
-    let fileCount = fileList.length - 1
-    let files = []
+      //iterating through the file list
+      for(let i=0; i <= fileCount; i++){
 
-    for(let i=0; i <= fileCount; i++){
+        let reader = new FileReader();
 
-      let reader = new FileReader();
+        reader.onloadend = () => {
+          buffer = Buffer.from(reader.result)
 
-      reader.onloadend = () => {
-        buffer = Buffer.from(reader.result)
+          this.props.ipfs.files.add({content: buffer}).then(result => {
+            // converting to buffer here so it translates back correctly
+            // should be able to split by the slash since nothing else should have a slice.
 
-        this.props.ipfs.files.add({content: buffer}).then(result => {
-          // converting to buffer here so it translates back correctly
-          // should be able to split by the slash since nothing else should have a slice.
-          files.push(Buffer.from(result[0].hash + "/" + fileList[i].name))
-          i === fileCount ? this.createRelease(files, values) : null
-        }).catch(console.log)
+            files.push(Buffer.from(result[0].hash + "/" + fileList[i].name))
+            i === fileCount ? this.createRelease(files, artwork[0].hash, values) : null
+          }).catch("file error", console.log)
+        }
+        let buffer = reader.readAsArrayBuffer(fileList[i])
       }
+    })
+    .catch("artwork error", console.log)
 
-      let buffer = reader.readAsArrayBuffer(fileList[i])
-    }
   }
 
   handleSubmit = (e, form) => {
@@ -97,7 +108,7 @@ class NewReleasePage extends Component {
       if (err){
         // return message.error('Please check your data and try again.')
       }
-      message.success('Submitted!')
+      // start uploading thing here, change it at end of chain
       this.uploadIPFS(values)
     })
   }
@@ -107,7 +118,6 @@ class NewReleasePage extends Component {
   }
 
   setImage = (fileInfo) => {
-    console.log(fileInfo)
     this.getBase64(fileInfo.file)
   }
 
