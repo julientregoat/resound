@@ -1,5 +1,4 @@
 # tbd dApp
-==========
 
 Still working on a name for this one.
 
