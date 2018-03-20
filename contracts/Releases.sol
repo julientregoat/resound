@@ -8,6 +8,8 @@ contract Releases {
       owner = msg.sender;
   }
 
+
+
   struct Release {
     uint id;
     address owner;
@@ -15,6 +17,7 @@ contract Releases {
     string title;
     string description;
     string tracklist;
+    /*  price is a 5 digit float 0.0000 */
     uint64 price;
     string artwork;
     byte[120][] files;
@@ -32,7 +35,7 @@ contract Releases {
   }
 
   modifier verifyPayment(uint _id) {
-    uint weiPrice = releases[_id].price * 1000000000000000000;
+    uint weiPrice = releases[_id].price * 100000000000000;
     require(msg.value >= weiPrice);
     _;
   }

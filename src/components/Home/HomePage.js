@@ -6,6 +6,10 @@ import { setReleases } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
+  fromMillietherBigNum = bigNum => {
+    return bigNum.toNumber() / 10000
+  }
+
   fileBufferConversion = (bufferArray) => {
     let fileList = []
     bufferArray.forEach(bufferString => {
@@ -40,7 +44,8 @@ class HomePage extends Component {
               title: release[0][2],
               description: release[0][3],
               tracklist: release[0][4],
-              price: release[1][0].toNumber(),
+              // converting price to correct number of decimals
+              price: this.fromMillietherBigNum(release[1][0]),
               artwork: release[1][1],
               files: this.fileBufferConversion(release[1][2])
             })

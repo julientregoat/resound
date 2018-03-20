@@ -19,6 +19,13 @@ class NewReleasePage extends Component {
     isNaN(parseInt(value, 10)) ? callback("Must be a number!") : callback()
   }
 
+  toMilliether = valueString => {
+    // comes in as a string. scrub down to 5 digits
+    let truncated = valueString.slice(0, 6)
+    let float = parseFloat(truncated)
+    return float * 10000
+  }
+
   getBase64(img) {
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -33,7 +40,7 @@ class NewReleasePage extends Component {
                                       values.title,
                                       values.description,
                                       values.tracklist,
-                                      values.price,
+                                      this.toMilliether(values.price),
                                       "QmNjUs7aB6aE1EKy1yQYHUUVymwGXqiVnGkEoGhmx7EVRh",
                                       tracklist,
                                       {from: this.props.user.wallet})
