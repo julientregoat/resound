@@ -1,7 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const LatestReleases = ({}) => (
-  <div></div>
+import ReleaseCard from './ReleaseCard';
+
+const LatestReleases = ({ releases }) => (
+  <div>
+  </div>
 );
 
-export default LatestReleases;
+const mapStateToProps = state => ({
+  releases: state.site.releases
+})
+
+export default connect(mapStateToProps)(LatestReleases);

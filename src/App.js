@@ -20,8 +20,8 @@ import ReleasesInterface from './build/contracts/Releases.json';
 
 class App extends Component {
 
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.getEthPrice()
   }
 

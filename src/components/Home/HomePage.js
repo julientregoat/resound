@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import LatestReleases from './LatestReleases';
 
-import { connect } from 'react-redux'
-
-import { setReleases } from '../../actions/siteActions'
+import { connect } from 'react-redux';
+import { setReleases } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
@@ -12,14 +12,20 @@ class HomePage extends Component {
       this.props.contract.releaseCount()
       .then(num => {
         let count = num.toNumber();
+        let releases = [];
+
         console.log(count)
+
         // iterate through all releases using the total count provided
         for(let i = 0; i < count; i++){
           // can use Promise.all here
-          this.props.contract.releaseInfo(i).then(console.log)
-          this.props.contract.releaseContent(i).then(values =>{
-            console.log(Buffer.from(values[2][0]).toString('utf8'), values[0].toNumber(), values[2])
-          })
+
+          Promise.all([this.props.contract.releaseInfo(i), this.props.contract.releaseContent(i)])
+          .then(console.log)
+          // this.props.contract.releaseInfo(i).then(console.log)
+          // this.props.contract.releaseContent(i).then(values =>{
+          //   console.log(Buffer.from(values[2][0]).toString('utf8'), values[0].toNumber(), values[2])
+          // })
         }
       })
       // solidity
@@ -31,13 +37,15 @@ class HomePage extends Component {
   }
 
   componentDidMount(){
+    // is this not rendering the first time because the contract isn't available?
+    // probably.
     this.getReleases()
   }
 
   render() {
     return (
       <div>
-        Home Page
+        <LatestReleases />
       </div>
     );
   }
