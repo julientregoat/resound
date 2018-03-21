@@ -2,14 +2,14 @@ import React from 'react';
 import { Table } from 'antd';
 
 const columns = [
-  { title: 'Artist', dataIndex: 'artist' },
-  { title: 'Release', dataIndex: 'title' }
+  { title: 'Artist', dataIndex: 'artist', key: 'artist' },
+  { title: 'Release', dataIndex: 'title', key: 'title' }
 ];
 
-const CollectionTable = ({ userReleases }) => (
+const CollectionTable = ({ userPurchases }) => (
   <Table
     columns={columns}
-    dataSource={userReleases}
+    dataSource={userPurchases}
   >
 
   </Table>

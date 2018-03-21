@@ -6,20 +6,23 @@ import { setUserCollection } from '../../actions/userActions';
 
 class CollectionPage extends Component {
 
+  // filterUserPurchases = () => {
+  //   return this.props.releases.filter(release => this.props.user.collection.includes(release.id))
+  // }
+
   fetchUserPurchases = () => {
-    // need to error handle a bit better if user goes to collection first
-    // or perhaps delay rendering until the contract is available?
+    // need to grab releases independently of home page
     if (this.props.contract){
       this.props.contract.getUserPurchases({from: this.props.user.wallet})
       .then(bigNums => {
         let normalNums = bigNums.map(bigNum => bigNum.toNumber())
-        console.log(normalNums)
+        this.props.setUserCollection(normalNums)
       })
       .catch(console.log)
     }
   }
 
-  componentDidUpdate(){
+  componentDidMount(){
     this.fetchUserPurchases()
   }
 
@@ -27,7 +30,7 @@ class CollectionPage extends Component {
     return (
       <div>
         <h1>Your Collection</h1>
-        <CollectionTable userPurchases={this.props.releases }/>
+        <CollectionTable userPurchases={this.props.releases.filter(release => this.props.user.collection.includes(release.id))}/>
       </div>
     );
   }

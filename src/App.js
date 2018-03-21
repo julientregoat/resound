@@ -108,6 +108,7 @@ class App extends Component {
         this.props.ipfs.files.cat(release[1][1])
         .then(artworkString => {
           let releaseObj = {
+            key: id,
             id: id,
             owner: release[0][0],
             artist: release[0][1],
