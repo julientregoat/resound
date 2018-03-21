@@ -4,7 +4,9 @@ import './App.css';
 import Header from './components/Header/Header';
 import HomePage from './components/Home/HomePage';
 import AccountPage from './components/Account/AccountPage';
-import NewReleasePage from './components/NewRelease/NewReleasePage'
+import NewReleasePage from './components/NewRelease/NewReleasePage';
+import AboutPage from './components/About/AboutPage';
+import CollectionPage from './components/Collection/CollectionPage';
 
 import { Route, Redirect, Switch, withRouter } from 'react-router-dom';
 
@@ -80,6 +82,8 @@ class App extends Component {
           <Route exact path="/" component={HomePage}/>
           <Route path="/me" component={AccountPage}/>
           <Route path="/new" component={NewReleasePage}/>
+          <Route path="/about" component={AboutPage}/>
+          <Route path="/collection" component={CollectionPage}/>
           <Redirect to="/" />
         </Switch>
       </div>

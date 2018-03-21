@@ -4,7 +4,7 @@ class AboutPage extends Component {
 
   render() {
     return (
-      <div></div>
+      <div> About this project - Render Markup Readme from github?</div>
     );
   }
 

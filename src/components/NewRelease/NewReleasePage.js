@@ -36,6 +36,7 @@ class NewReleasePage extends Component {
   }
 
   getBase64(img) {
+    // need to implement something for loading pic time
     const reader = new FileReader();
     reader.onloadend = () => {
       Jimp.read(Buffer.from(reader.result))
