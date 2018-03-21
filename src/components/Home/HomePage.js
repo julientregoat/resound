@@ -74,11 +74,9 @@ class HomePage extends Component {
 
   componentDidUpdate(){
     this.getReleases()
-    console.log('hi')
   }
 
   handlePurchase = () => {
-    console.log('hi')
   }
 
   modalContent = () => {
