@@ -5,11 +5,7 @@ import { connect } from 'react-redux';
 import { setUserCollection } from '../../actions/userActions';
 
 class CollectionPage extends Component {
-
-  // filterUserPurchases = () => {
-  //   return this.props.releases.filter(release => this.props.user.collection.includes(release.id))
-  // }
-
+  
   fetchUserPurchases = () => {
     // need to grab releases independently of home page
     if (this.props.contract){
