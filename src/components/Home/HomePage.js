@@ -80,8 +80,9 @@ class HomePage extends Component {
   }
 
   modalContent = () => {
-    if (this.props.modalVisibility){
+    if (typeof this.props.modalVisibility === "number"){
       let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
+      console.log(currentRelease)
       return (
         <Row type="flex" justify="space-between">
           <Col>
@@ -113,7 +114,7 @@ class HomePage extends Component {
       <div>
         <LatestReleases releases={this.props.releases}/>
         <Modal
-          visible={this.props.modalVisibility ? true : false}
+          visible={typeof this.props.modalVisibility === 'number'}
           closable={false}
           onOk={this.handlePurchase}
           okText="Purchase Release"

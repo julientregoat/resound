@@ -62,6 +62,7 @@ class NewReleasePage extends Component {
     .then(res => {
       this.props.isNotUploading()
       form.resetFields()
+      this.props.resetArtworkPreview()
       message.success('Release uploaded!')
     })
     .catch(res => {
@@ -160,4 +161,4 @@ const mapStateToProps = state => ({
   ipfs: state.site.ipfs
 })
 
-export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview, setUSDConversion })(NewReleasePage);
+export default connect(mapStateToProps, { setUploaderFileList, isUploading, isNotUploading, setArtworkPreview, setUSDConversion, resetArtworkPreview })(NewReleasePage);
