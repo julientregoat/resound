@@ -53,6 +53,7 @@ class HomePage extends Component {
   modalContent = () => {
     if (typeof this.props.modalVisibility === "number"){
       let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
+      console.log(currentRelease.artwork)
       return (
         <Row type="flex" justify="space-between">
           <Col>
