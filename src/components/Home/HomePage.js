@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import LatestReleases from './LatestReleases';
-import { Modal, Row, Col } from 'antd';
+import { Modal, Row, Col, message } from 'antd';
 
 import { connect } from 'react-redux';
 import { addRelease, hideModal } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
-  fromMillietherBigNum = bigNum => {
+  // this converts the price integer located in the Release struct
+  // integer to 4 decimal places -> 0.0000, stored in struct as 00000
+  // need to convert back and forth when interacting with 'price'
+  correctDecimalPlace = bigNum => {
     return bigNum.toNumber() / 10000
+  }
+
+  // need to send transactions in Wei
+  // 10^18 Wei = 1 ether
+  toWei = ether => {
+    return ether * 1000000000000000000
   }
 
   fileBufferConversion = (bufferArray) => {
@@ -40,7 +49,7 @@ class HomePage extends Component {
             description: release[0][3],
             tracklist: release[0][4],
             // converting price to correct number of decimals
-            price: this.fromMillietherBigNum(release[1][0]),
+            price: this.correctDecimalPlace(release[1][0]),
             artwork: artworkString,
             files: this.fileBufferConversion(release[1][2])
           }
@@ -68,7 +77,6 @@ class HomePage extends Component {
   }
 
   componentDidMount(){
-    // is this not rendering the first time because the contract isn't available?
     this.getReleases()
   }
 
@@ -76,13 +84,24 @@ class HomePage extends Component {
     this.getReleases()
   }
 
+  // perhaps I should move this to App.js buuuuuut for now, functionality > all
   handlePurchase = () => {
+    let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
+    this.props.contract.purchaseRelease(currentRelease.id, {from: this.props.user.wallet, value: this.toWei(currentRelease.price)})
+    .then(res => {
+      this.props.hideModal()
+      message.success('Successful purchase! Check your collection to download.')
+    })
+    .catch(error => {
+      this.props.hideModal()
+      message.error('There was an issue with your upload.')
+      console.log(error)
+    })
   }
 
   modalContent = () => {
     if (typeof this.props.modalVisibility === "number"){
       let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
-      console.log(currentRelease)
       return (
         <Row type="flex" justify="space-between">
           <Col>
@@ -131,6 +150,7 @@ class HomePage extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.user,
   ipfs: state.site.ipfs,
   contract: state.web3.contract,
   releases: state.site.releases,

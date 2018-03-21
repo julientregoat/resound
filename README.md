@@ -17,3 +17,5 @@ In developing this decentralized serverless architecture for my backend, I lever
 ## Concerns and Issues
 * In its current iteration, the files hashes are exposed to the public. This clearly isn't secure for artists avoiding piracy.
 * I also don't provide nearly enough security on the user verification front. I just pull from MetaMask's injected web3 instance. In the future, I should implement something like Consensys' uPort to verify the user.
+* I handle Wei / Ether conversion pretty messily. I only stored up to a complexity of 0.0000 decimal places, but it would have been far easier to just force the user to work in Wei. However, I thought this might be confusing to the average user. May explore this again later with a live conversion below.
+* Lots of refactoring and optimization. There's a lot of async work in here that needs to be corralled a bit as far as triggering rerenders etc.

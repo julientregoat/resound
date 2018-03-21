@@ -7,4 +7,11 @@ const setUser = (wallet, walletBalance, earningsBalance) => ({
   }
 })
 
-export { setUser }
+const setUserCollection = releaseIDArray => ({
+  type: 'SET_USER_COLLECTION',
+  payload: {
+    collection: releaseIDArray
+  }
+})
+
+export { setUser, setUserCollection }

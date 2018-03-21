@@ -44,6 +44,7 @@ class App extends Component {
       let wallet;
       let walletBalance;
 
+      // use Promise.all here
       this.props.w3.eth.getAccounts()
       .then(accounts => {
         wallet = accounts[0];
