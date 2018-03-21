@@ -60,15 +60,23 @@ export default (state = initialState, action) => {
           artworkPreview: action.payload.artworkPreview
         }
       }
+    case 'RESET_ARTWORK_PREVIEW':
+      return {
+        ...state,
+        uploader: {
+          ...state.uploader,
+          artworkPreview: null
+        }
+      }
     case 'RESET_FILES':
-     return {
-       ...state,
-       uploader: {
-         uploading: false,
-         artworkPreview: null,
-         files: []
+      return {
+         ...state,
+         uploader: {
+           uploading: false,
+           artworkPreview: null,
+           files: []
+         }
        }
-     }
      case 'SET_IPFS':
       return {
         ...state,

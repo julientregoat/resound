@@ -38,6 +38,10 @@ class App extends Component {
     }
   }
 
+  fromWei = wei => {
+    return wei / 1000000000000000000
+  }
+
   // call this every time a transaction happens?
   getUserInfo = () => {
     if (this.props.w3 && !this.props.user.wallet){
@@ -54,7 +58,7 @@ class App extends Component {
         walletBalance = this.props.web3.utils.fromWei(walletBal)
         return this.props.contract.viewBalance({from: wallet})
       })
-      .then(earningsBalance => this.props.setUser(wallet, walletBalance, earningsBalance.toNumber()))
+      .then(earningsBalance => this.props.setUser(wallet, walletBalance, this.fromWei(earningsBalance.toNumber())))
     }
   }
 

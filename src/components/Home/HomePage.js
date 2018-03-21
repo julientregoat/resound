@@ -36,7 +36,6 @@ class HomePage extends Component {
     this.getReleases()
   }
 
-  // perhaps I should move this to App.js buuuuuut for now, functionality > all
   handlePurchase = () => {
     let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
     this.props.contract.purchaseRelease(currentRelease.id, {from: this.props.user.wallet, value: this.toWei(currentRelease.price)})

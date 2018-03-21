@@ -35,10 +35,7 @@ const setArtworkPreview = (base64Img) => ({
 })
 
 const resetArtworkPreview = () => ({
-  type: 'RESET_ARTWORK_PREVIEW',
-  payload: {
-    artworkPreview: null
-  }
+  type: 'RESET_ARTWORK_PREVIEW'
 })
 
 const setReleases = releases => ({
