@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LatestReleases from './LatestReleases';
-import { Modal } from 'antd';
+import { Modal, Row, Col } from 'antd';
 
 import { connect } from 'react-redux';
 import { addRelease, hideModal } from '../../actions/siteActions';
@@ -76,18 +76,54 @@ class HomePage extends Component {
     this.getReleases()
     console.log('hi')
   }
-  // onClick={this.props.hideModal}
+
+  handlePurchase = () => {
+    console.log('hi')
+  }
+
+  modalContent = () => {
+    if (this.props.modalVisibility){
+      let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
+      return (
+        <Row type="flex" justify="space-between">
+          <Col>
+            <h1> {currentRelease.title} </h1>
+
+            <h2> {currentRelease.artist} </h2>
+
+            <h3> Description </h3>
+            <p>{currentRelease.description}</p>
+
+            <h3> Tracklisting </h3>
+            <p>{currentRelease.description}</p>
+
+            <p> <b>Price:</b> {currentRelease.price} ETH</p>
+          </Col>
+          <Col>
+            <img alt="release art" src={currentRelease.artwork} />
+          </Col>
+        </Row>
+
+      )
+    } else {
+      return null
+    }
+  }
+
   render() {
     return (
       <div>
         <LatestReleases releases={this.props.releases}/>
         <Modal
           visible={this.props.modalVisibility ? true : false}
+          closable={false}
+          onOk={this.handlePurchase}
           okText="Purchase Release"
           cancelText="Back"
           onCancel={this.props.hideModal}
+          width={700}
         >
-          <h1> modal test </h1>
+          {this.modalContent()}
         </Modal>
       </div>
     );
