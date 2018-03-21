@@ -1,14 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { showModal } from '../../actions/siteActions';
 
-import { Card, Col } from 'antd';
+import { Card, Col, Button } from 'antd';
 
-const ReleaseCard = ({ release }) => (
+const ReleaseCard = ({ release, showModal }) => (
   <Col span={8} className="release-card">
     <Card
       hoverable
-      style={{height: 500, width: 350}}
+      style={{width: 350}}
       cover={<img alt="poop" src={release.artwork} />}
       title={release.title}
+      actions={[<Button ghost type="primary" onClick={() => showModal(release.id)}>More</Button>]}
     >
     <Card.Meta
       title={release.artist}
@@ -18,4 +21,4 @@ const ReleaseCard = ({ release }) => (
   </Col>
 );
 
-export default ReleaseCard;
+export default connect(null, { showModal })(ReleaseCard);

@@ -55,6 +55,17 @@ const addRelease = release => ({
   }
 })
 
+const showModal = id => ({
+  type: 'SHOW_MODAL',
+  payload: {
+    modalVisibility: id
+  }
+})
+
+const hideModal = () => ({
+  type: 'HIDE_MODAL'
+})
+
 // wonder if I'll ever need this
 const setIPFS = (instance) => ({
   type: 'SET_IPFS',
@@ -72,4 +83,6 @@ export { setUSDPrice,
         setUSDConversion,
         setReleases,
         addRelease,
+        showModal,
+        hideModal,
         setIPFS }

@@ -4,6 +4,7 @@ const initialState = {
   USDPrice: 0,
   ipfs: ipfs,
   releases: [],
+  modalVisibility: null,
   uploader: {
     uploading: false,
     files: [],
@@ -13,7 +14,6 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  console.log(action)
   switch(action.type){
     case 'SET_USD_PRICE':
       return {
@@ -88,6 +88,16 @@ export default (state = initialState, action) => {
           ...state,
           releases: [...state.releases, action.payload.release]
         }
+      }
+    case 'SHOW_MODAL':
+      return {
+        ...state,
+        modalVisibility: action.payload.modalVisibility
+      }
+    case 'HIDE_MODAL':
+      return {
+        ...state,
+        modalVisibility: null
       }
     default:
       return state;

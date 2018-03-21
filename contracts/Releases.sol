@@ -8,8 +8,6 @@ contract Releases {
       owner = msg.sender;
   }
 
-
-
   struct Release {
     uint id;
     address owner;
@@ -66,6 +64,10 @@ contract Releases {
 
   function getArtistReleases() public view returns (uint[]) {
     return artistReleases[msg.sender];
+  }
+
+  function getUserPurchases() public view returns (uint[]) {
+    return userPurchases[msg.sender];
   }
 
   function releaseInfo(uint _id) public view returns (address, string, string, string, string) {

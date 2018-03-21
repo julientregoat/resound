@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import LatestReleases from './LatestReleases';
+import { Modal } from 'antd';
 
 import { connect } from 'react-redux';
-import { addRelease } from '../../actions/siteActions';
+import { addRelease, hideModal } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
@@ -57,7 +58,7 @@ class HomePage extends Component {
       .then(num => {
         // check total number of releases in smart contract and compare to number of releases in the store
         let count = num.toNumber();
-        
+
         // iterate through all releases using the total count provided
         for(let i = this.props.releases.length; i < count; i++){
           this.fetchReleaseInfo(i)
@@ -75,11 +76,19 @@ class HomePage extends Component {
     this.getReleases()
     console.log('hi')
   }
-
+  // onClick={this.props.hideModal}
   render() {
     return (
       <div>
         <LatestReleases releases={this.props.releases}/>
+        <Modal
+          visible={this.props.modalVisibility ? true : false}
+          okText="Purchase Release"
+          cancelText="Back"
+          onCancel={this.props.hideModal}
+        >
+          <h1> modal test </h1>
+        </Modal>
       </div>
     );
   }
@@ -89,7 +98,8 @@ class HomePage extends Component {
 const mapStateToProps = state => ({
   ipfs: state.site.ipfs,
   contract: state.web3.contract,
-  releases: state.site.releases
+  releases: state.site.releases,
+  modalVisibility: state.site.modalVisibility
 })
 
-export default connect(mapStateToProps, { addRelease })(HomePage);
+export default connect(mapStateToProps, { addRelease, hideModal })(HomePage);
