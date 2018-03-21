@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CollectionTable from './CollectionTable'
 
 import { connect } from 'react-redux';
 import { setUserCollection } from '../../actions/userActions';
@@ -24,7 +25,10 @@ class CollectionPage extends Component {
 
   render() {
     return (
-      <div> Your collection of purchased records here. </div>
+      <div>
+        <h1>Your Collection</h1>
+        <CollectionTable userPurchases={this.props.releases }/>
+      </div>
     );
   }
 

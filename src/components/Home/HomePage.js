@@ -7,62 +7,14 @@ import { addRelease, hideModal } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
-  // this converts the price integer located in the Release struct
-  // integer to 4 decimal places -> 0.0000, stored in struct as 00000
-  // need to convert back and forth when interacting with 'price'
-  correctDecimalPlace = bigNum => {
-    return bigNum.toNumber() / 10000
-  }
-
   // need to send transactions in Wei
   // 10^18 Wei = 1 ether
   toWei = ether => {
     return ether * 1000000000000000000
   }
 
-  fileBufferConversion = (bufferArray) => {
-    let fileList = []
-    bufferArray.forEach(bufferString => {
-      // the bufferString is an array of hex strings
-      // need to convert to a Buffer object to convert it into readable string
-      // each file is stored in a string with format '[IPFSfilehash]/[filename]'
-      let fileDetails = Buffer.from(bufferString).toString('utf8').split('/')
-      fileList.push({location: fileDetails[0], fileName: fileDetails[1]})
-    })
-    return fileList
-  }
-
-  fetchReleaseInfo = id => {
-    if (this.props.releases.filter(release => release.id === id).length === 0){
-      Promise.all([
-        this.props.contract.releaseInfo(id),
-        this.props.contract.releaseContent(id)
-      ])
-      .then(release => {
-        this.props.ipfs.files.cat(release[1][1])
-        .then(artworkString => {
-          let releaseObj = {
-            id: id,
-            owner: release[0][0],
-            artist: release[0][1],
-            title: release[0][2],
-            description: release[0][3],
-            tracklist: release[0][4],
-            // converting price to correct number of decimals
-            price: this.correctDecimalPlace(release[1][0]),
-            artwork: artworkString,
-            files: this.fileBufferConversion(release[1][2])
-          }
-          this.props.addRelease(releaseObj)
-        })
-        .catch(console.log)
-      })
-    }
-  }
-
   getReleases = () => {
-    if ( this.props.contract ){
-
+    if ( this.props.contract && this.props.releases ){
       this.props.contract.releaseCount()
       .then(num => {
         // check total number of releases in smart contract and compare to number of releases in the store
@@ -70,7 +22,7 @@ class HomePage extends Component {
 
         // iterate through all releases using the total count provided
         for(let i = this.props.releases.length; i < count; i++){
-          this.fetchReleaseInfo(i)
+          this.props.fetchReleaseInfo(i)
         }
       })
     }

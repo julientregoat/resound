@@ -14,7 +14,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { setWeb3 } from './actions/web3Actions'
 import { setUser } from './actions/userActions'
-import { setUSDPrice } from './actions/siteActions'
+import { setUSDPrice, addRelease } from './actions/siteActions'
 
 import injectWeb3 from 'react-web3-hoc';
 import contract from 'truffle-contract';
@@ -75,16 +75,77 @@ class App extends Component {
     this.getUserInfo()
   }
 
+  // this converts the price integer located in the Release struct
+  // integer to 4 decimal places -> 0.0000, stored in struct as 00000
+  // need to convert back and forth when interacting with 'price'
+  correctDecimalPlace = bigNum => {
+    return bigNum.toNumber() / 10000
+  }
+
+  fileBufferConversion = (bufferArray) => {
+    let fileList = []
+    bufferArray.forEach(bufferString => {
+      // the bufferString is an array of hex strings
+      // need to convert to a Buffer object to convert it into readable string
+      // each file is stored in a string with format '[IPFSfilehash]/[filename]'
+      let fileDetails = Buffer.from(bufferString).toString('utf8').split('/')
+      fileList.push({location: fileDetails[0], fileName: fileDetails[1]})
+    })
+    return fileList
+  }
+
+  fetchReleaseInfo = id => {
+    if (this.props.releases.filter(release => release.id === id).length === 0){
+      Promise.all([
+        this.props.contract.releaseInfo(id),
+        this.props.contract.releaseContent(id)
+      ])
+      .then(release => {
+        this.props.ipfs.files.cat(release[1][1])
+        .then(artworkString => {
+          let releaseObj = {
+            id: id,
+            owner: release[0][0],
+            artist: release[0][1],
+            title: release[0][2],
+            description: release[0][3],
+            tracklist: release[0][4],
+            // converting price to correct number of decimals
+            price: this.correctDecimalPlace(release[1][0]),
+            artwork: artworkString,
+            files: this.fileBufferConversion(release[1][2])
+          }
+          this.props.addRelease(releaseObj)
+        })
+        .catch(console.log)
+      })
+    }
+  }
+
   render() {
     return (
       <div className="App">
         <Header />
         <Switch>
-          <Route exact path="/" component={HomePage}/>
+          <Route exact path="/" render={routeProps => (
+              <HomePage
+                {...routeProps}
+                fetchReleaseInfo={this.fetchReleaseInfo}
+                fileBufferConversion={this.fileBufferConversion}
+                correctDecimalPlace={this.correctDecimalPlace}
+              />
+          )} />
+          <Route path="/collection" render={routeProps => (
+              <CollectionPage
+                {...routeProps}
+                fetchReleaseInfo={this.fetchReleaseInfo}
+                fileBufferConversion={this.fileBufferConversion}
+                correctDecimalPlace={this.correctDecimalPlace}
+              />
+          )}/>
           <Route path="/me" component={AccountPage}/>
           <Route path="/new" component={NewReleasePage}/>
           <Route path="/about" component={AboutPage}/>
-          <Route path="/collection" component={CollectionPage}/>
           <Redirect to="/" />
         </Switch>
       </div>
@@ -94,9 +155,11 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   w3: state.web3.instance,
-  contract:state.web3.contract,
+  contract: state.web3.contract,
+  ipfs: state.site.ipfs,
   user: state.user,
-  releases: state.releases,
+  releases: state.site.releases,
   USDPrice: state.site.USDPrice
 })
-export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setUSDPrice }), injectWeb3())(App)
+
+export default compose(withRouter, connect(mapStateToProps, { setWeb3, setUser, setUSDPrice, addRelease }), injectWeb3())(App)
