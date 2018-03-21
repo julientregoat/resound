@@ -46,12 +46,11 @@ const NewReleaseForm = ({ submit,
         {rules: [{required: true}]})(<Input size="large"/>)}
     </Form.Item>
 
-    <Form.Item  {...formItemLayout} label="Artwork" extra="Your artwork will be resized to a square. Please make sure it is at least 300 pixels on all sides.">
+    <Form.Item  {...formItemLayout} label="Artwork" extra="Your artwork will be resized to 300px x 300px. Ensure it is a square for best results.">
       {form.getFieldDecorator('artwork', {rules: [{required: true}]})(
           <Upload
           accept="image/*"
           listType="picture-card"
-          multiple={false}
           beforeUpload={() => false}
           showUploadList={false}
           onChange={setImage}

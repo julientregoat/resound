@@ -34,6 +34,13 @@ const setArtworkPreview = (base64Img) => ({
   }
 })
 
+const resetArtworkPreview = () => ({
+  type: 'RESET_ARTWORK_PREVIEW',
+  payload: {
+    artworkPreview: null
+  }
+})
+
 const setReleases = releases => ({
   type: 'SET_ALL_RELEASES',
   payload: {
@@ -61,6 +68,7 @@ export { setUSDPrice,
         isUploading,
         isNotUploading,
         setArtworkPreview,
+        resetArtworkPreview,
         setUSDConversion,
         setReleases,
         addRelease,

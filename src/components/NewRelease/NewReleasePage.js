@@ -4,6 +4,7 @@ import { setUploaderFileList,
          isUploading,
          isNotUploading,
          setArtworkPreview,
+         resetArtworkPreview,
          setUSDConversion } from '../../actions/siteActions';
 
 import { Spin, message } from 'antd';
@@ -35,7 +36,7 @@ class NewReleasePage extends Component {
     return float * 10000
   }
 
-  getBase64(img) {
+  getBase64 = img => {
     // need to implement something for loading pic time
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -49,7 +50,7 @@ class NewReleasePage extends Component {
     reader.readAsArrayBuffer(img)
   }
 
-  createRelease = (tracklistHashes, artworkHash, values) => {
+  createRelease = (tracklistHashes, artworkHash, values, form) => {
     this.props.contract.createRelease(values.artist,
                                       values.title,
                                       values.description,
@@ -60,6 +61,7 @@ class NewReleasePage extends Component {
                                       {from: this.props.user.wallet})
     .then(res => {
       this.props.isNotUploading()
+      form.resetFields()
       message.success('Release uploaded!')
     })
     .catch(res => {
@@ -69,7 +71,7 @@ class NewReleasePage extends Component {
     // this.props.isUploading()
   }
 
-  uploadIPFS = (values) => {
+  uploadIPFS = (values, form) => {
     // need to limit filename of release tracks.
     // 120 byte limit, 46b hash, 1b '/', 4b '.mp3'
     // 69 bytes left for the actual filename
@@ -82,7 +84,7 @@ class NewReleasePage extends Component {
       let fileCount = fileList.length - 1
       let files = []
 
-      //iterating through the file list
+      //should this be exported to a singular function to call on each iteration?
       for(let i=0; i <= fileCount; i++){
 
         let reader = new FileReader();
@@ -91,13 +93,15 @@ class NewReleasePage extends Component {
           buffer = Buffer.from(reader.result)
 
           this.props.ipfs.files.add({content: buffer}).then(result => {
-            // converting to buffer here so it translates back correctly
-            // should be able to split by the slash since nothing else should have a slice.
 
+            // add buffered strings to our file list
             files.push(Buffer.from(result[0].hash + "/" + fileList[i].name))
-            i === fileCount ? this.createRelease(files, artwork[0].hash, values) : null
+            // check if we're at the end of the list, and if we are, callback
+            i === fileCount ? this.createRelease(files, artwork[0].hash, values, form) : null
+
           }).catch("file error", console.log)
         }
+
         let buffer = reader.readAsArrayBuffer(fileList[i])
       }
     })
@@ -106,16 +110,14 @@ class NewReleasePage extends Component {
   }
 
   handleSubmit = (e, form) => {
-    // only upload the last image!
-    // or add a 'current photo' to state for previews
-    // store images as base64 in IPFS
     e.preventDefault()
     form.validateFields((err, values) => {
       if (err){
         return message.error('Please check your data and try again.')
       }
+      window.scroll(0,0)
       this.props.isUploading()
-      this.uploadIPFS(values)
+      this.uploadIPFS(values, form)
     })
   }
 
