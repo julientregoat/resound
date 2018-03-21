@@ -6,7 +6,7 @@ const columns = [
   { title: 'Release', dataIndex: 'title', key: 'title' }
 ];
 
-const CollectionTable = ({ userPurchases, handleExpand }) => (
+const CollectionTable = ({ userPurchases, handleExpand, handleDownload }) => (
   <Col span={20} offset={2}>
     <Table
       bordered
@@ -25,7 +25,7 @@ const CollectionTable = ({ userPurchases, handleExpand }) => (
             </Col>
             <Col span={12}>
               <h3>Download Links</h3>
-              {release.files.map(file => <b key={release.id}>{file.fileName}</b>)}
+              {release.files.map(file => <b key={release.id} onClick={() => handleDownload(file)}>{file.fileName}</b>)}
             </Col>
           </React.Fragment>
         )

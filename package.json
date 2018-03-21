@@ -6,6 +6,7 @@
     "antd": "^3.3.0",
     "ipfs-api": "^18.1.2",
     "jimp": "0.2.27",
+    "js-file-download": "^0.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.7",
