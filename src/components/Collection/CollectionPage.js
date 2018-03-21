@@ -36,7 +36,6 @@ class CollectionPage extends Component {
 
     this.props.ipfs.files.get(file.location)
     .then(data => {
-      console.log(name[0].length)
       fileDownload(data[0].content, name[0] + ".mp3")
     })
   }
