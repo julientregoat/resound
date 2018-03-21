@@ -4,9 +4,9 @@ import ReleaseCard from './ReleaseCard';
 import { Row, Spin } from 'antd'
 
 const LatestReleases = ({ releases }) => (
-  <React.Fragment>
+  <Row justify="space-between" type="flex">
     {releases.map(release => <ReleaseCard release={release} key={release.id}/>)}
-  </React.Fragment>
+  </Row>
 );
 
 export default LatestReleases;

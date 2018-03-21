@@ -6,7 +6,7 @@ const ReleaseCard = ({ release }) => (
   <Col span={7}>
     <Card
       hoverable
-      style={{height: 400}}
+      style={{height: 400, width: 300}}
       cover={<img alt="poop" src={release.artwork} />}
       title={release.title}
     >

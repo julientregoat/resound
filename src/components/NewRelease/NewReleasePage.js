@@ -4,10 +4,12 @@ import { setUploaderFileList,
          isUploading,
          isNotUploading,
          setArtworkPreview,
-         setUSDConversion } from '../../actions/siteActions'
+         setUSDConversion } from '../../actions/siteActions';
 
-import { Spin, message } from 'antd'
-import NewReleaseForm from './NewReleaseForm'
+import { Spin, message } from 'antd';
+import NewReleaseForm from './NewReleaseForm';
+
+const Jimp = require('jimp')
 
 class NewReleasePage extends Component {
 
@@ -36,9 +38,14 @@ class NewReleasePage extends Component {
   getBase64(img) {
     const reader = new FileReader();
     reader.onloadend = () => {
-      this.props.setArtworkPreview(reader.result)
+      Jimp.read(Buffer.from(reader.result))
+      .then(img => {
+        img.resize(300, 300)
+        .getBase64(Jimp.AUTO, (err, base64) => this.props.setArtworkPreview(base64));
+      })
+      .catch(err => console.log("error", err))
     }
-    reader.readAsDataURL(img);
+    reader.readAsArrayBuffer(img)
   }
 
   createRelease = (tracklistHashes, artworkHash, values) => {
@@ -51,8 +58,8 @@ class NewReleasePage extends Component {
                                       tracklistHashes,
                                       {from: this.props.user.wallet})
     .then(res => {
+      this.props.isNotUploading()
       message.success('Release uploaded!')
-      // clear form here
     })
     .catch(res => {
       message.error('There was an error uploading your release. Please try again.')
@@ -101,14 +108,12 @@ class NewReleasePage extends Component {
     // only upload the last image!
     // or add a 'current photo' to state for previews
     // store images as base64 in IPFS
-    console.log(this.props.ipfs)
     e.preventDefault()
     form.validateFields((err, values) => {
-      console.log(values)
       if (err){
-        // return message.error('Please check your data and try again.')
+        return message.error('Please check your data and try again.')
       }
-      // start uploading thing here, change it at end of chain
+      this.props.isUploading()
       this.uploadIPFS(values)
     })
   }
@@ -125,7 +130,7 @@ class NewReleasePage extends Component {
     return (
       <Spin
         size="large"
-        tip="Uploading release..."
+        tip="Uploading release... Make sure you accept the Metamask prompt."
         spinning={this.props.uploader.uploading}
       >
         <NewReleaseForm
