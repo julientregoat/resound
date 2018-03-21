@@ -29,9 +29,9 @@ class CollectionPage extends Component {
 
   handleDownload = file => {
     // really hacky way to deal with an annoying issue.
-    // because filenames are 120bytes fixed, there is extra space at the
-    // end that needs to be removed. there's gotta be a nicer way to do this.
-    
+    // filenames are 120bytes fixed => extra space at the end of string
+    // there's gotta be a nicer way to do this.
+
     let name = file.fileName.toString().split('.mp3')
 
     this.props.ipfs.files.get(file.location)
