@@ -1,10 +1,8 @@
-# tbd dApp
+# resound
 
-Still working on a name for this one.
+Resound is a decentralized music marketplace for independent artists and labels.
 
-This is a web app is a decentralized music marketplace.
-
-The goal here was to develop a front end using React/Redux, and develop an 'always on' decentralized backend. In doing so, people could choose to use the website without this frontend due to the nature of such a backend.
+The goal here was to develop a front end using React/Redux, and develop an 'always on' decentralized, serverless backend. In doing so, people could choose to use the website without this frontend due to the nature of such a backend.
 
 In developing this decentralized serverless architecture for my backend, I leveraged two services:
   * The Ethereum Virtual Machine (EVM) as a database for primitive data types and transaction logic.
