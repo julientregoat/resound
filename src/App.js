@@ -100,11 +100,13 @@ class App extends Component {
 
   fetchReleaseInfo = id => {
     if (this.props.releases.filter(release => release.id === id).length === 0){
+      console.log(this.props.contract)
       Promise.all([
         this.props.contract.releaseInfo(id),
         this.props.contract.releaseContent(id)
       ])
       .then(release => {
+        console.log('release', release)
         this.props.ipfs.files.cat(release[1][1])
         .then(artworkString => {
           let releaseObj = {

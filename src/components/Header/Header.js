@@ -6,7 +6,7 @@ import { Row } from 'antd';
 
 const Header = ({ user }) => (
   <div className="header">
-    <Row type="flex" justify="center"><h1> bitcamp </h1></Row>
+    <Row type="flex" justify="center"><h1> resound </h1></Row>
 
     <Row type="flex" justify="space-between" className="header-row">
       <span className="header-item">Wallet: {user.wallet}</span>

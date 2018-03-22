@@ -38,12 +38,12 @@ contract Releases {
     _;
   }
 
-  modifier verifyNotPurchased(uint _id) {
-    /*  check the userPurchases mapping */
-  }
+  /* modifier verifyPurchase(uint _id) {
+    check the userPurchases mapping
+  } */
 
   function createRelease(string _artist, string _title, string _description, string _tracklist, uint64 _price, string _artwork, byte[120][] _files) public {
-    uint id = releases.length - 1;
+    uint id = releases.length;
     releases.push(Release(id, msg.sender, _artist, _title, _description, _tracklist, _price, _artwork, _files));
     artistReleases[msg.sender].push(id);
     NewRelease(msg.sender, _title, _artist);
