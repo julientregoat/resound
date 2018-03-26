@@ -100,10 +100,9 @@ class App extends Component {
 
   fetchReleaseInfo = id => {
     if (this.props.releases.filter(release => release.id === id).length === 0){
-      this.props.contract.releaseContent.estimateGas(5).then(res => console.log("gas", res))
       Promise.all([
-        this.props.contract.releaseInfo(id),
-        this.props.contract.releaseContent(id)
+        this.props.contract.releaseInfo(id, {from: this.props.user.wallet, gas: 1200000}),
+        this.props.contract.releaseContent(id, {from: this.props.user.wallet, gas: 1200000})
       ])
       .then(release => {
         console.log('release', id, release)

@@ -29,11 +29,11 @@ class HomePage extends Component {
   }
 
   componentDidMount(){
-    // this.getReleases()
+    this.getReleases()
   }
 
   componentDidUpdate(){
-    // this.getReleases()
+    this.getReleases()
   }
 
   handlePurchase = () => {
@@ -81,7 +81,6 @@ class HomePage extends Component {
   }
 
   render() {
-    this.props.contract ? this.props.contract.releaseContent(0, {from: this.props.user.wallet, gas: 138185}).then(res => console.log("good?", res)).catch(err => console.log('error', err)) : null
     return (
       <div>
         <LatestReleases releases={this.props.releases}/>
