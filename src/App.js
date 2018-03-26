@@ -88,6 +88,7 @@ class App extends Component {
 
   fileBufferConversion = (bufferArray) => {
     let fileList = []
+    console.log(bufferArray)
     bufferArray.forEach(bufferString => {
       // the bufferString is an array of hex strings
       // need to convert to a Buffer object to convert it into readable string
@@ -105,7 +106,6 @@ class App extends Component {
         this.props.contract.releaseContent(id, {from: this.props.user.wallet, gas: 1200000})
       ])
       .then(release => {
-        console.log('release', id, release)
         this.props.ipfs.files.cat(release[1][1])
         .then(artworkString => {
           let releaseObj = {

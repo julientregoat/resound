@@ -25,7 +25,7 @@ const CollectionTable = ({ userPurchases, handleExpand, handleDownload }) => (
             </Col>
             <Col span={12}>
               <h3>Download Links</h3>
-              {release.files.map(file => <b key={release.id} onClick={() => handleDownload(file)}>{file.fileName}</b>)}
+              {release.files.map(file => <li key={release.files.indexOf(file)} onClick={() => handleDownload(file)}><b>{file.fileName}</b></li>)}
             </Col>
           </React.Fragment>
         )
