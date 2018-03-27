@@ -69,8 +69,8 @@ class App extends Component {
   }
 
   componentDidMount(){
-    // checking price once a minute
     setInterval(this.getEthPrice, 60000)
+    setInterval(this.getUserInfo(true), 60000)
   }
 
   componentDidUpdate(){
@@ -151,6 +151,7 @@ class App extends Component {
               <HomePage
                 {...routeProps}
                 getReleases={this.getReleases}
+                getUserInfo={this.getUserInfo}
               />
           )} />
           <Route path="/collection" render={routeProps => (

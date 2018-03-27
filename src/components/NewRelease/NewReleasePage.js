@@ -72,7 +72,7 @@ class NewReleasePage extends Component {
       this.props.isNotUploading()
       form.resetFields()
       this.props.resetArtworkPreview()
-      this.props.getUserInfo(true)
+      setTimeout(() => this.props.getUserInfo(true), 4000)
       message.success('Release uploaded!')
     })
     .catch(res => {

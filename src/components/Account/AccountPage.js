@@ -16,7 +16,6 @@ class AccountPage extends Component {
       this.props.contract.getArtistReleases({from: this.props.user.wallet})
       .then(releaseIDs => {
         let ids = releaseIDs.map(id => id.toNumber())
-        console.log(ids)
         this.props.setUserReleases(ids)
       })
     }
@@ -29,12 +28,13 @@ class AccountPage extends Component {
 
   componentDidUpdate(){
     this.getUserReleases()
+    console.log('account page update')
   }
 
   handleWithdraw = () => {
     this.props.contract.withdraw({from: this.props.user.wallet, gas: 50000})
     .then(res => {
-      this.props.getUserInfo(true)
+      setTimeout(() => this.props.getUserInfo(true), 4000)
       message.success('Withdraw complete!')
     })
     .catch(err => {

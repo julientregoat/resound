@@ -27,11 +27,13 @@ class HomePage extends Component {
     this.props.contract.purchaseRelease(currentRelease.id, {from: this.props.user.wallet, value: this.toWei(currentRelease.price)})
     .then(res => {
       this.props.hideModal()
+      setTimeout(() => this.props.getUserInfo(true), 4000)
       message.success('Successful purchase! Check your collection to download.')
     })
     .catch(error => {
       this.props.hideModal()
-      message.error('There was an issue with your upload.')
+      this.props.getUserInfo(true)
+      message.error('There was an issue with your purchase.')
       console.log(error)
     })
   }
