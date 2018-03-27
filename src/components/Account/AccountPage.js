@@ -46,7 +46,9 @@ class AccountPage extends Component {
           earnings={this.props.user.earningsBalance}
           handleWithdraw={this.handleWithdraw}
           />
-        <UserReleasesManager userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}/>
+        {this.props.user.releases ?
+          <UserReleasesManager userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}/> :
+          <div> No releases here!</div>}
       </div>
     );
   }

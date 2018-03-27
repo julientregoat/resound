@@ -52,11 +52,14 @@ class CollectionPage extends Component {
         <Col offset={1}>
           <h1>Your Collection</h1>
         </Col>
-        <CollectionTable
+        {this.props.user.collection ?
+          <CollectionTable
           userPurchases={this.props.releases.filter(release => this.props.user.collection.includes(release.id))}
           handleExpand={this.handleExpand}
-          handleDownload={this.handleDownload}
-        />
+          handleDownload={this.handleDownload}/> :
+          <div> No releases here!</div>
+          }
+
       </div>
     );
   }
