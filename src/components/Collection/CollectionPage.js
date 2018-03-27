@@ -43,7 +43,7 @@ class CollectionPage extends Component {
   render() {
     return (
       <div>
-        <Col offset={2}>
+        <Col offset={1}>
           <h1>Your Collection</h1>
         </Col>
         <CollectionTable

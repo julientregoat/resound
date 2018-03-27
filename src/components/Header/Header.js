@@ -6,7 +6,10 @@ import { Row } from 'antd';
 
 const Header = ({ user }) => (
   <div className="header">
-    <Row type="flex" justify="center"><h1> resound </h1></Row>
+    <Row type="flex" justify="space-between" className="header-row">
+      <h1> resound </h1>
+      <Navbar />
+    </Row>
 
     <Row type="flex" justify="space-between" className="header-row">
       <span className="header-item">Wallet: {user.wallet}</span>
@@ -16,11 +19,6 @@ const Header = ({ user }) => (
         <span className="header-item">Earnings: {user.earningsBalance} ETH</span>
       </span>
     </Row>
-
-    <Row type="flex" justify="start" className="header-row">
-      <Navbar />
-    </Row>
-
   </div>
 );
 

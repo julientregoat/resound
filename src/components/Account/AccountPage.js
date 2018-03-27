@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { setUserReleases } from '../../actions/userActions'
 
 import ReleasesManager from './ReleasesManager';
+import Withdraw from './Withdraw'
 
 class AccountPage extends Component {
 
@@ -23,13 +24,17 @@ class AccountPage extends Component {
     }
   }
 
+  handleWithdraw = () => {
+    console.log('test')
+  }
+
   componentDidUpdate
 
   render() {
     return (
       <div>
-        Account Page
-        <ReleasesManager />
+        <Withdraw earnings={this.props.user.earningsBalance}/>
+        <ReleasesManager/>
       </div>
     );
   }

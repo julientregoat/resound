@@ -1,9 +1,14 @@
 @import '~antd/dist/antd.css';
 
 .App {
-  margin-top: 25px;
+  margin-top: 100px;
   margin-left: 150px;
   margin-right: 150px;
+}
+
+body {
+  /* background-image: url("vector.jpg") !important;
+  background-repeat: repeat !important; */
 }
 
 .header {
@@ -29,4 +34,12 @@
 
 .release-card {
   margin-bottom: 25px;
+}
+
+.subcontainer {
+  margin-bottom: 50px;
+}
+
+.page-item {
+  margin-bottom: 50px;
 }

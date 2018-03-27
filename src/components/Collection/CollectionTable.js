@@ -7,9 +7,8 @@ const columns = [
 ];
 
 const CollectionTable = ({ userPurchases, handleExpand, handleDownload }) => (
-  <Col span={20} offset={2}>
+  <Col span={22} offset={1}>
     <Table
-      bordered
       columns={columns}
       dataSource={userPurchases}
       expandedRowRender={release => {
