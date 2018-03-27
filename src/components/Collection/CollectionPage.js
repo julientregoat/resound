@@ -25,6 +25,7 @@ class CollectionPage extends Component {
   }
 
   componentDidMount(){
+    this.props.getUserInfo(true)
     this.getUserPurchases()
   }
 

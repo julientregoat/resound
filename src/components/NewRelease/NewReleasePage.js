@@ -14,6 +14,14 @@ const Jimp = require('jimp')
 
 class NewReleasePage extends Component {
 
+  componentDidMount(){
+    this.props.getUserInfo(true)
+  }
+
+  componentDidUpdate(){
+    console.log('new release update')
+  }
+
   calculateUSD = (e) => {
     this.props.setUSDConversion(e.target.value * this.props.USDPrice)
   }
@@ -64,6 +72,7 @@ class NewReleasePage extends Component {
       this.props.isNotUploading()
       form.resetFields()
       this.props.resetArtworkPreview()
+      this.props.getUserInfo(true)
       message.success('Release uploaded!')
     })
     .catch(res => {

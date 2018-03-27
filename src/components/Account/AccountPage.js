@@ -23,6 +23,7 @@ class AccountPage extends Component {
   }
 
   componentDidMount(){
+    this.props.getUserInfo(true)
     this.getUserReleases()
   }
 
@@ -32,7 +33,10 @@ class AccountPage extends Component {
 
   handleWithdraw = () => {
     this.props.contract.withdraw({from: this.props.user.wallet, gas: 50000})
-    .then(res => message.success('Withdraw complete!'))
+    .then(res => {
+      this.props.getUserInfo(true)
+      message.success('Withdraw complete!')
+    })
     .catch(err => {
       message.error('An error occured. Please try again later.')
       console.log("Error", err)

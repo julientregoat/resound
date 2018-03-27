@@ -42,9 +42,9 @@ class App extends Component {
     return wei / 1000000000000000000
   }
 
-  // call this every time a transaction happens?
-  getUserInfo = () => {
-    if (this.props.w3 && !this.props.user.wallet){
+  // called defaults to false so that it only can be called on startup or when 'called' is true
+  getUserInfo = (called = false) => {
+    if (this.props.w3 && (!this.props.user.wallet || called)){
       let wallet;
       let walletBalance;
 
@@ -91,7 +91,7 @@ class App extends Component {
     let fileList = []
     bufferArray.forEach(bufferString => {
       // the bufferString is an array of hex strings
-      // need to convert to a Buffer object to convert it into readable string
+      // I convert to a Buffer object to convert it into readable string
       // each file is stored in a string with format '[IPFSfilehash]/[filename]'
       let fileDetails = Buffer.from(bufferString).toString('utf8').split('/')
       fileList.push({location: fileDetails[0], fileName: fileDetails[1]})
@@ -116,7 +116,6 @@ class App extends Component {
             title: release[0][2],
             description: release[0][3],
             tracklist: release[0][4],
-            // converting price to correct number of decimals
             price: this.correctDecimalPlace(release[1][0]),
             artwork: artworkString,
             files: this.fileBufferConversion(release[1][2])
@@ -158,15 +157,22 @@ class App extends Component {
               <CollectionPage
                 {...routeProps}
                 getReleases={this.getReleases}
+                getUserInfo={this.getUserInfo}
               />
           )}/>
           <Route path="/me" render={routeProps => (
             <AccountPage
               {...routeProps}
               getReleases={this.getReleases}
+              getUserInfo={this.getUserInfo}
             />
           )}/>
-          <Route path="/new" component={NewReleasePage}/>
+        <Route path="/new" render={routeProps => (
+            <NewReleasePage
+              {...routeProps}
+              getUserInfo={this.getUserInfo}
+            />
+          )}/>
           <Route path="/about" component={AboutPage}/>
         </Switch>
       </div>
