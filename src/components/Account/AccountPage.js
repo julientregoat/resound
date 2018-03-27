@@ -25,7 +25,8 @@ class AccountPage extends Component {
   }
 
   handleWithdraw = () => {
-    console.log('test')
+    this.props.contract.withdraw({from: this.props.user.wallet})
+    .then(console.log)
   }
 
   componentDidUpdate
@@ -33,7 +34,9 @@ class AccountPage extends Component {
   render() {
     return (
       <div>
-        <Withdraw earnings={this.props.user.earningsBalance}/>
+        <Withdraw
+          earnings={this.props.user.earningsBalance}
+          handleWithdraw={this.handleWithdraw}/>
         <ReleasesManager/>
       </div>
     );

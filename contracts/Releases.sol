@@ -62,6 +62,7 @@ contract Releases {
 
   function withdraw() public {
     msg.sender.transfer(balance[msg.sender]);
+    balance[msg.sender] = 0;
   }
 
   /*  release info data calls */
