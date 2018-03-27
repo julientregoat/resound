@@ -4,6 +4,7 @@ import { setUserReleases } from '../../actions/userActions'
 
 import ReleasesManager from './ReleasesManager';
 import Withdraw from './Withdraw'
+import { message } from 'antd'
 
 class AccountPage extends Component {
 
@@ -27,16 +28,18 @@ class AccountPage extends Component {
 
   componentDidUpdate(){
     this.getUserReleases()
-    console.log('accout page update')
   }
 
   handleWithdraw = () => {
-    this.props.contract.withdraw({from: this.props.user.wallet})
-    .then(console.log)
+    this.props.contract.withdraw({from: this.props.user.wallet, gas: 50000})
+    .then(res => message.success('Withdraw complete!'))
+    .catch(err => {
+      message.error('An error occured. Please try again later.')
+      console.log("Error", err)
+    })
   }
 
   render() {
-    console.log(this.props.user.releases)
     return (
       <div>
         <Withdraw
