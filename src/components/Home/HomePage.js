@@ -3,7 +3,7 @@ import LatestReleases from './LatestReleases';
 import { Modal, Row, Col, message } from 'antd';
 
 import { connect } from 'react-redux';
-import { addRelease, hideModal, addFetchRelease } from '../../actions/siteActions';
+import { addRelease, hideModal } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
@@ -13,28 +13,13 @@ class HomePage extends Component {
     return ether * 1000000000000000000
   }
 
-  getReleases = () => {
-    if ( this.props.contract && this.props.releases ){
-      this.props.contract.releaseCount()
-      .then(num => {
-        // check total number of releases in smart contract and compare to number of releases in the store
-        let count = num.toNumber();
-
-        // iterate through all releases using the total count provided
-        for(let i = this.props.releases.length; i < count; i++){
-          this.props.fetchReleaseInfo(i)
-        }
-      })
-    }
-  }
-
   componentDidMount(){
-    this.props.addFetchRelease(this.getReleases)
-    this.getReleases()
+    this.props.getReleases()
   }
 
   componentDidUpdate(){
-    this.getReleases()
+    this.props.getReleases()
+    console.log('home page update')
   }
 
   handlePurchase = () => {
@@ -109,4 +94,4 @@ const mapStateToProps = state => ({
   modalVisibility: state.site.modalVisibility
 })
 
-export default connect(mapStateToProps, { addRelease, hideModal, addFetchRelease })(HomePage);
+export default connect(mapStateToProps, { addRelease, hideModal })(HomePage);

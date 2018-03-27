@@ -77,6 +77,7 @@ class App extends Component {
     // these are both being called twice on app start, fix that
     this.setupWeb3()
     this.getUserInfo()
+    console.log('app update')
   }
 
   // this converts the price integer located in the Release struct
@@ -127,6 +128,21 @@ class App extends Component {
     }
   }
 
+  getReleases = () => {
+    if ( this.props.contract && this.props.releases ){
+      this.props.contract.releaseCount()
+      .then(num => {
+        // check total number of releases in smart contract and compare to number of releases in the store
+        let count = num.toNumber();
+
+        // iterate through all releases using the total count provided
+        for(let i = this.props.releases.length; i < count; i++){
+          this.fetchReleaseInfo(i)
+        }
+      })
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -135,20 +151,21 @@ class App extends Component {
           <Route exact path="/" render={routeProps => (
               <HomePage
                 {...routeProps}
-                fetchReleaseInfo={this.fetchReleaseInfo}
-                fileBufferConversion={this.fileBufferConversion}
-                correctDecimalPlace={this.correctDecimalPlace}
+                getReleases={this.getReleases}
               />
           )} />
           <Route path="/collection" render={routeProps => (
               <CollectionPage
                 {...routeProps}
-                fetchReleaseInfo={this.fetchReleaseInfo}
-                fileBufferConversion={this.fileBufferConversion}
-                correctDecimalPlace={this.correctDecimalPlace}
+                getReleases={this.getReleases}
               />
           )}/>
-          <Route path="/me" component={AccountPage}/>
+          <Route path="/me" render={routeProps => (
+            <AccountPage
+              {...routeProps}
+              getReleases={this.getReleases}
+            />
+          )}/>
           <Route path="/new" component={NewReleasePage}/>
           <Route path="/about" component={AboutPage}/>
         </Switch>

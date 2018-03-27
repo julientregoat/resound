@@ -7,21 +7,26 @@ import Withdraw from './Withdraw'
 
 class AccountPage extends Component {
 
-  fetchUserReleases = () => {
-    this.props.contract.getArtistReleases({from: this.props.user.wallet}).
-    then(releaseIDs => {
-      let ids = releaseIDs.map(id => id.toNumber())
-      this.props.setUserReleases(ids)
-    })
+  getUserReleases = () => {
+    if (this.props.releases.length === 0){
+      this.props.getReleases()
+    }
+    if (this.props.contract && this.props.user.releases === null){
+      this.props.contract.getArtistReleases({from: this.props.user.wallet})
+      .then(releaseIDs => {
+        let ids = releaseIDs.map(id => id.toNumber())
+        this.props.setUserReleases(ids)
+      })
+    }
   }
 
   componentDidMount(){
-    if (this.props.user.releases.length !== 0){
-      this.fetchUserReleases()
-    } else {
-      this.props.fetchReleases()
-      setTimeout(this.fetchUserReleases, 5000)
-    }
+    this.getUserReleases()
+  }
+
+  componentDidUpdate(){
+    this.getUserReleases()
+    console.log('accout page update')
   }
 
   handleWithdraw = () => {
@@ -29,14 +34,13 @@ class AccountPage extends Component {
     .then(console.log)
   }
 
-  componentDidUpdate
-
   render() {
     return (
       <div>
         <Withdraw
           earnings={this.props.user.earningsBalance}
-          handleWithdraw={this.handleWithdraw}/>
+          handleWithdraw={this.handleWithdraw}
+          />
         <ReleasesManager/>
       </div>
     );
@@ -47,7 +51,7 @@ class AccountPage extends Component {
 const mapStateToProps = state => ({
   contract: state.web3.contract,
   user: state.user,
-  fetchReleases: state.site.fetchReleases
+  releases: state.site.releases
 })
 
 export default connect(mapStateToProps, { setUserReleases })(AccountPage);

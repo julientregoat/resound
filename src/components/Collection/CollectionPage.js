@@ -7,13 +7,14 @@ import { connect } from 'react-redux';
 import { setUserCollection } from '../../actions/userActions';
 
 const fileDownload = require('js-file-download')
-// e.g. fileDownload(data, 'filename.csv');
 
 class CollectionPage extends Component {
 
-  fetchUserPurchases = () => {
-    // need to grab releases independently of home page
-    if (this.props.contract){
+  getUserPurchases = () => {
+    if (this.props.releases.length === 0){
+      this.props.getReleases()
+    }
+    if (this.props.contract && this.props.user.collection === null){
       this.props.contract.getUserPurchases({from: this.props.user.wallet})
       .then(bigNums => {
         let normalNums = bigNums.map(bigNum => bigNum.toNumber())
@@ -24,7 +25,12 @@ class CollectionPage extends Component {
   }
 
   componentDidMount(){
-    this.fetchUserPurchases()
+    this.getUserPurchases()
+  }
+
+  componentDidUpdate(){
+    console.log('collection update')
+    this.getUserPurchases()
   }
 
   handleDownload = file => {

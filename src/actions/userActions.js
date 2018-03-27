@@ -10,14 +10,14 @@ const setUser = (wallet, walletBalance, earningsBalance) => ({
 const setUserCollection = releaseIDArray => ({
   type: 'SET_USER_COLLECTION',
   payload: {
-    collection: releaseIDArray
+    collection: [...releaseIDArray]
   }
 })
 
 const setUserReleases = releaseIDArray => ({
   type: 'SET_USER_RELEASES',
   payload: {
-    releases: releaseIDArray
+    releases: [...releaseIDArray]
   }
 })
 

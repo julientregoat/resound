@@ -2,8 +2,8 @@ const initialState = {
   wallet: null,
   walletBalance: 0,
   earningsBalance: 0,
-  collection: [],
-  releases: []
+  collection: null,
+  releases: null
 }
 
 export default (state = initialState, action) => {
