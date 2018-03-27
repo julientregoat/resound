@@ -14,4 +14,11 @@ const setUserCollection = releaseIDArray => ({
   }
 })
 
-export { setUser, setUserCollection }
+const setUserReleases = releaseIDArray => ({
+  type: 'SET_USER_RELEASES',
+  payload: {
+    releases: releaseIDArray
+  }
+})
+
+export { setUser, setUserCollection, setUserReleases }

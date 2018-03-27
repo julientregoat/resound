@@ -8,7 +8,7 @@ const ReleaseCard = ({ release, showModal }) => (
   <Col span={8} className="release-card">
     <Card
       hoverable
-      style={{width: 350}}
+      style={{width: 300}}
       cover={<img alt="poop" src={release.artwork} />}
       title={release.title}
       actions={[<Button ghost type="primary" onClick={() => showModal(release.id)}>More</Button>]}

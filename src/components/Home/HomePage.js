@@ -3,7 +3,7 @@ import LatestReleases from './LatestReleases';
 import { Modal, Row, Col, message } from 'antd';
 
 import { connect } from 'react-redux';
-import { addRelease, hideModal } from '../../actions/siteActions';
+import { addRelease, hideModal, addFetchRelease } from '../../actions/siteActions';
 
 class HomePage extends Component {
 
@@ -29,6 +29,7 @@ class HomePage extends Component {
   }
 
   componentDidMount(){
+    this.props.addFetchRelease(this.getReleases)
     this.getReleases()
   }
 
@@ -53,7 +54,6 @@ class HomePage extends Component {
   modalContent = () => {
     if (typeof this.props.modalVisibility === "number"){
       let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
-      console.log(currentRelease.artwork)
       return (
         <Row type="flex" justify="space-between">
           <Col>
@@ -109,4 +109,4 @@ const mapStateToProps = state => ({
   modalVisibility: state.site.modalVisibility
 })
 
-export default connect(mapStateToProps, { addRelease, hideModal })(HomePage);
+export default connect(mapStateToProps, { addRelease, hideModal, addFetchRelease })(HomePage);

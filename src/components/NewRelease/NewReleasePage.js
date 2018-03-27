@@ -44,6 +44,7 @@ class NewReleasePage extends Component {
       .then(img => {
         img.resize(300, 300)
         .getBase64(Jimp.AUTO, (err, base64) => this.props.setArtworkPreview(base64));
+        this.props.isNotUploading()
       })
       .catch(err => console.log("error", err))
     }
@@ -127,6 +128,7 @@ class NewReleasePage extends Component {
   }
 
   setImage = (fileInfo) => {
+    this.props.isUploading()
     this.getBase64(fileInfo.file)
   }
 

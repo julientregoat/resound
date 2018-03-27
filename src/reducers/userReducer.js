@@ -2,7 +2,8 @@ const initialState = {
   wallet: null,
   walletBalance: 0,
   earningsBalance: 0,
-  collection: []
+  collection: [],
+  releases: []
 }
 
 export default (state = initialState, action) => {
@@ -18,6 +19,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         collection: action.payload.collection
+      }
+    case 'SET_USER_RELEASES':
+      return {
+        ...state,
+        releases: action.payload.collection
       }
     default:
       return state;

@@ -31,7 +31,7 @@ class App extends Component {
     // handle changing of metamask instance?
     // looks like polling at interval is the only answer
     // or checking every time a transaction or something pertinent to the user is going to happen?
-    if (!this.props.w3){
+    if (!this.props.w3 && this.props.web3){
       const releasesContract = contract(ReleasesInterface)
       releasesContract.setProvider(this.props.web3.currentProvider)
       releasesContract.deployed().then(instance => this.props.setWeb3(this.props.web3, instance))
@@ -88,7 +88,6 @@ class App extends Component {
 
   fileBufferConversion = (bufferArray) => {
     let fileList = []
-    console.log(bufferArray)
     bufferArray.forEach(bufferString => {
       // the bufferString is an array of hex strings
       // need to convert to a Buffer object to convert it into readable string
@@ -152,7 +151,6 @@ class App extends Component {
           <Route path="/me" component={AccountPage}/>
           <Route path="/new" component={NewReleasePage}/>
           <Route path="/about" component={AboutPage}/>
-          <Redirect to="/" />
         </Switch>
       </div>
     );

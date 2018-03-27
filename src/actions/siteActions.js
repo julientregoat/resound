@@ -63,6 +63,13 @@ const hideModal = () => ({
   type: 'HIDE_MODAL'
 })
 
+const addFetchRelease = func => ({
+  type: 'ADD_FETCH_RELEASES_FUNCTION',
+  payload: {
+    fetchReleases: func
+  }
+})
+
 // wonder if I'll ever need this
 const setIPFS = (instance) => ({
   type: 'SET_IPFS',
@@ -82,4 +89,5 @@ export { setUSDPrice,
         addRelease,
         showModal,
         hideModal,
+        addFetchRelease,
         setIPFS }

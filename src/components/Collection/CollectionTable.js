@@ -13,7 +13,6 @@ const CollectionTable = ({ userPurchases, handleExpand, handleDownload }) => (
       columns={columns}
       dataSource={userPurchases}
       expandedRowRender={release => {
-        console.log(release)
         return (
           <React.Fragment>
             <Col span={12}>
