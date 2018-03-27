@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setUserReleases } from '../../actions/userActions'
 
-import ReleasesManager from './ReleasesManager';
+import UserReleasesManager from './UserReleasesManager';
 import Withdraw from './Withdraw'
 import { message } from 'antd'
 
@@ -46,7 +46,7 @@ class AccountPage extends Component {
           earnings={this.props.user.earningsBalance}
           handleWithdraw={this.handleWithdraw}
           />
-        <ReleasesManager/>
+        <UserReleasesManager userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}/>
       </div>
     );
   }
