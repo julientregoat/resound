@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
     case 'SET_USER_RELEASES':
       return {
         ...state,
-        releases: action.payload.collection
+        releases: action.payload.releases
       }
     default:
       return state;
