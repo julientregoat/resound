@@ -77,7 +77,6 @@ class App extends Component {
     // these are both being called twice on app start, fix that
     this.setupWeb3()
     this.getUserInfo()
-    console.log('app update')
   }
 
   // this converts the price integer located in the Release struct

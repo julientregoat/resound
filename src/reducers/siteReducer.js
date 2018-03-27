@@ -5,7 +5,7 @@ const initialState = {
   ipfs: ipfs,
   releases: [],
   modalVisibility: null,
-  fetchReleases: null,
+  loading: false,
   uploader: {
     uploading: false,
     files: [],
@@ -108,10 +108,15 @@ export default (state = initialState, action) => {
         ...state,
         modalVisibility: null
       }
-    case 'ADD_FETCH_RELEASES_FUNCTION':
+    case 'IS_LOADING':
       return {
         ...state,
-        fetchReleases: action.payload.fetchReleases
+        loading: true
+      }
+    case 'IS_NOT_LOADING':
+      return {
+        ...state,
+        loading: false
       }
     default:
       return state;

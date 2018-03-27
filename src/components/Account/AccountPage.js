@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setUserReleases } from '../../actions/userActions'
+import { showModal, hideModal } from '../../actions/siteActions'
 
+import { message, Row, Col, Modal } from 'antd'
 import UserReleasesManager from './UserReleasesManager';
 import Withdraw from './Withdraw'
-import { message } from 'antd'
 
 class AccountPage extends Component {
 
@@ -28,7 +29,6 @@ class AccountPage extends Component {
 
   componentDidUpdate(){
     this.getUserReleases()
-    console.log('account page update')
   }
 
   handleWithdraw = () => {
@@ -43,6 +43,37 @@ class AccountPage extends Component {
     })
   }
 
+  modalContent = () => {
+    if (typeof this.props.modalVisibility === "number"){
+      let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
+      return (
+        <Row type="flex" justify="space-between">
+          <Col>
+            <h1> {currentRelease.title} </h1>
+
+            <h2> {currentRelease.artist} </h2>
+
+            <h3> Description </h3>
+            <p>{currentRelease.description}</p>
+
+            <h3> Tracklisting </h3>
+            <p>{currentRelease.description}</p>
+
+            <p> <b>Price:</b> {currentRelease.price} ETH</p>
+          </Col>
+          <Col>
+            <img alt="release art" src={currentRelease.artwork} />
+          </Col>
+        </Row>
+
+      )
+    } else {
+      return null
+    }
+  }
+
+  editReleaseLink = (text, record) => (<a onClick={() => this.showModal(record.id)}>Edit</a>)
+
   render() {
     return (
       <div>
@@ -51,8 +82,20 @@ class AccountPage extends Component {
           handleWithdraw={this.handleWithdraw}
           />
         {this.props.user.releases ?
-          <UserReleasesManager userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}/> :
+          <UserReleasesManager userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}
+          editReleaseLink={this.editReleaseLink}
+          /> :
           <div> No releases here!</div>}
+          <Modal
+            visible={typeof this.props.modalVisibility === 'number'}
+            closable={false}
+            onOk={this.handlePurchase}
+            okText="Edit Release"
+            onCancel={this.props.hideModal}
+            width={700}
+          >
+            {this.modalContent()}
+          </Modal>
       </div>
     );
   }
@@ -65,4 +108,4 @@ const mapStateToProps = state => ({
   releases: state.site.releases
 })
 
-export default connect(mapStateToProps, { setUserReleases })(AccountPage);
+export default connect(mapStateToProps, { setUserReleases, showModal, hideModal })(AccountPage);

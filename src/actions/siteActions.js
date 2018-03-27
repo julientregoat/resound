@@ -63,11 +63,12 @@ const hideModal = () => ({
   type: 'HIDE_MODAL'
 })
 
-const addFetchRelease = func => ({
-  type: 'ADD_FETCH_RELEASES_FUNCTION',
-  payload: {
-    fetchReleases: func
-  }
+const isLoading = () => ({
+  type: 'IS_LOADING'
+})
+
+const isNotLoading = () => ({
+  type: 'IS_NOT_LOADING'
 })
 
 // wonder if I'll ever need this
@@ -89,5 +90,6 @@ export { setUSDPrice,
         addRelease,
         showModal,
         hideModal,
-        addFetchRelease,
+        isLoading,
+        isNotLoading,
         setIPFS }

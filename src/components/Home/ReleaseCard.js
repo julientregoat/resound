@@ -5,7 +5,7 @@ import { showModal } from '../../actions/siteActions';
 import { Card, Col, Button } from 'antd';
 
 const ReleaseCard = ({ release, showModal }) => (
-  <Col span={8} className="release-card">
+  <Col span={7} offset={1} className="release-card">
     <Card
       hoverable
       style={{width: 300}}

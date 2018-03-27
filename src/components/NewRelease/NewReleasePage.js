@@ -18,10 +18,6 @@ class NewReleasePage extends Component {
     this.props.getUserInfo(true)
   }
 
-  componentDidUpdate(){
-    console.log('new release update')
-  }
-
   calculateUSD = (e) => {
     this.props.setUSDConversion(e.target.value * this.props.USDPrice)
   }
