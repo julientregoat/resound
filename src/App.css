@@ -1,7 +1,7 @@
 @import '~antd/dist/antd.css';
 
 .App {
-  margin-top: 50px;
+  margin-top: 25px;
   margin-left: 150px;
   margin-right: 150px;
 }
@@ -11,12 +11,17 @@ body {
   background-repeat: repeat !important; */
 }
 
+h1 {
+  font-size: 48px;
+}
+
 .header {
   margin-bottom: 50px;
 }
 
-.header-row {
-  margin-bottom: 10px;
+.menu-adjust {
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 
 .header-item {
