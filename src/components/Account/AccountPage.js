@@ -13,11 +13,17 @@ class AccountPage extends Component {
     if (this.props.releases.length === 0){
       this.props.getReleases()
     }
-    if (this.props.contract && this.props.user.releases === null){
+    if (this.props.contract && this.props.user.wallet){
       this.props.contract.getArtistReleases({from: this.props.user.wallet})
       .then(releaseIDs => {
         let ids = releaseIDs.map(id => id.toNumber())
-        this.props.setUserReleases(ids)
+        console.log(ids)
+        if (!this.props.user.releases ||
+          ids.filter(id => !this.props.user.releases.includes(id)).length > 0 ||
+          (ids.length === 0 && this.props.user.releases.length !== 0)
+        ){
+           this.props.setUserReleases(ids)
+        }
       })
     }
   }
@@ -30,6 +36,7 @@ class AccountPage extends Component {
   componentDidUpdate(){
     this.props.getUserInfo(true)
     this.getUserReleases()
+    console.log('reload')
   }
 
   handleWithdraw = () => {
@@ -45,14 +52,13 @@ class AccountPage extends Component {
   }
 
   handleEdit = () => {
-    let formattedNewPrice = this.props.toTenThousandths(this.props.newPrice)
     let id = this.props.modalVisibility
     let release = this.props.releases.find(release => release.id === id)
-
-    if (!this.props.newPrice || this.props.newPrice === release.price){
+    if (!this.props.newPrice || parseInt(this.props.newPrice) === release.price){
       this.props.hideModal()
       return message.warning('No edits detected.')
     } else {
+      let formattedNewPrice = this.props.toTenThousandths(this.props.newPrice)
       this.props.contract.changePrice(id, formattedNewPrice, {from: this.props.user.wallet})
       .then(res => {
         this.props.hideModal()

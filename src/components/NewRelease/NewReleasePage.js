@@ -58,6 +58,7 @@ class NewReleasePage extends Component {
       message.success('Release uploaded!')
     })
     .catch(res => {
+      this.props.isNotUploading()
       message.error('There was an error uploading your release. Please try again.')
       console.log("create release error", res)
     })
@@ -92,13 +93,13 @@ class NewReleasePage extends Component {
             // check if we're at the end of the list, and if we are, callback
             i === fileCount ? this.createRelease(files, artwork[0].hash, values, form) : null
 
-          }).catch("file error", console.log)
+          }).catch(console.log)
         }
 
         let buffer = reader.readAsArrayBuffer(fileList[i])
       }
     })
-    .catch("artwork error", console.log)
+    .catch(console.log)
 
   }
 

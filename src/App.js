@@ -58,7 +58,16 @@ class App extends Component {
         walletBalance = this.props.web3.utils.fromWei(walletBal)
         return this.props.contract.viewBalance({from: wallet})
       })
-      .then(earningsBalance => this.props.setUser(wallet, walletBalance, this.fromWei(earningsBalance.toNumber())))
+      .then(earningsBal => {
+        let earningsBalance = this.fromWei(earningsBal.toNumber())
+        if (this.props.user.wallet === wallet &&
+          this.props.user.walletBalance === walletBalance &&
+          this.props.user.earningsBalance === earningsBalance){
+          return false
+        } else {
+          return this.props.setUser(wallet, walletBalance, earningsBalance)
+        }
+      })
     }
   }
 
@@ -66,7 +75,7 @@ class App extends Component {
   toTenThousandths = valueString => {
     let scrubbed = valueString
 
-    // comes in as a string. scrub down to 4 decimal places if there is one
+    // comes in as a string. scrub down to 10^-4 decimal places if there is one
     if (valueString.includes(".")){
       let splitValues = valueString.split(".")
       splitValues[1] = splitValues[1].slice(0,4)
@@ -89,6 +98,7 @@ class App extends Component {
   }
 
   componentDidUpdate(){
+    console.log('app reload')
     // these are both being called twice on app start, fix that
     this.setupWeb3()
     this.getUserInfo()
