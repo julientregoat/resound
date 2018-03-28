@@ -32,6 +32,10 @@ body {
   width: 300px !important;
 }
 
+.edit-input {
+  width: 75px !important;
+}
+
 .release-card {
   margin-bottom: 25px;
 }

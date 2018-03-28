@@ -6,6 +6,7 @@ const initialState = {
   releases: [],
   modalVisibility: null,
   loading: false,
+  newPrice: 0,
   uploader: {
     uploading: false,
     files: [],
@@ -117,6 +118,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false
+      }
+    case 'SET_NEW_PRICE':
+      return {
+        ...state,
+        newPrice: action.payload.newPrice
+      }
+    case 'RESET_NEW_PRICE':
+      return {
+        ...state,
+        newPrice: null
       }
     default:
       return state;

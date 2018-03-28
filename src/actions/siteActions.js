@@ -71,6 +71,17 @@ const isNotLoading = () => ({
   type: 'IS_NOT_LOADING'
 })
 
+const setNewPrice = price => ({
+  type: 'SET_NEW_PRICE',
+  payload: {
+    newPrice: price
+  }
+})
+
+const resetNewPrice = () => ({
+  type: 'RESET_NEW_PRICE',
+})
+
 // wonder if I'll ever need this
 const setIPFS = (instance) => ({
   type: 'SET_IPFS',
@@ -92,4 +103,6 @@ export { setUSDPrice,
         hideModal,
         isLoading,
         isNotLoading,
+        setNewPrice,
+        resetNewPrice,
         setIPFS }

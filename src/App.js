@@ -62,6 +62,21 @@ class App extends Component {
     }
   }
 
+  // lol I couldn't find a better name for 10^-4 decimal places so I just went with this
+  toTenThousandths = valueString => {
+    let scrubbed = valueString
+
+    // comes in as a string. scrub down to 4 decimal places if there is one
+    if (valueString.includes(".")){
+      let splitValues = valueString.split(".")
+      splitValues[1] = splitValues[1].slice(0,4)
+      scrubbed = splitValues.join(".")
+    }
+
+    let float = parseFloat(scrubbed)
+    return float * 10000
+  }
+
   getEthPrice = () => {
     fetch('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
     .then(res => res.json())
@@ -165,12 +180,14 @@ class App extends Component {
               {...routeProps}
               getReleases={this.getReleases}
               getUserInfo={this.getUserInfo}
+              toTenThousandths={this.toTenThousandths}
             />
           )}/>
         <Route path="/new" render={routeProps => (
             <NewReleasePage
               {...routeProps}
               getUserInfo={this.getUserInfo}
+              toTenThousandths={this.toTenThousandths}
             />
           )}/>
           <Route path="/about" component={AboutPage}/>

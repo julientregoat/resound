@@ -26,20 +26,6 @@ class NewReleasePage extends Component {
     isNaN(parseInt(value, 10)) ? callback("Must be a number!") : callback()
   }
 
-  toMilliether = valueString => {
-    let scrubbed = valueString
-
-    // comes in as a string. scrub down to 4 decimal places if there is one
-    if (valueString.includes(".")){
-      let splitValues = valueString.split(".")
-      splitValues[1] = splitValues[1].slice(0,4)
-      scrubbed = splitValues.join(".")
-    }
-
-    let float = parseFloat(scrubbed)
-    return float * 10000
-  }
-
   getBase64 = img => {
     // need to implement something for loading pic time
     const reader = new FileReader();
@@ -60,7 +46,7 @@ class NewReleasePage extends Component {
                                       values.title,
                                       values.description,
                                       values.tracklist,
-                                      this.toMilliether(values.price),
+                                      this.props.toTenThousandths(values.price),
                                       artworkHash,
                                       tracklistHashes,
                                       {from: this.props.user.wallet})

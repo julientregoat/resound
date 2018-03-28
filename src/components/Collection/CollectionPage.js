@@ -30,7 +30,6 @@ class CollectionPage extends Component {
   }
 
   componentDidUpdate(){
-    console.log('collection update')
     this.getUserPurchases()
   }
 

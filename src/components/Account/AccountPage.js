@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setUserReleases } from '../../actions/userActions'
-import { showModal, hideModal } from '../../actions/siteActions'
+import { showModal, hideModal, setNewPrice, resetNewPrice } from '../../actions/siteActions'
 
-import { message, Row, Col, Modal } from 'antd'
+import { message, Row, Col, Modal, Input } from 'antd'
 import UserReleasesManager from './UserReleasesManager';
 import Withdraw from './Withdraw'
 
@@ -43,6 +43,30 @@ class AccountPage extends Component {
     })
   }
 
+  handleEdit = () => {
+    let formattedNewPrice = this.props.toTenThousandths(this.props.newPrice)
+    let id = this.props.modalVisibility
+    let release = this.props.releases.find(release => release.id === id)
+
+    if (!this.props.newPrice || this.props.newPrice === release.price){
+      this.props.hideModal()
+      return message.warning('No edits detected.')
+    } else {
+      this.props.contract.changePrice(id, formattedNewPrice, {from: this.props.user.wallet})
+      .then(res => {
+        this.props.hideModal()
+        message.success('Price changed!')
+        setTimeout(() => this.props.getUserInfo(true), 4000)
+        this.props.resetNewPrice()
+      })
+      .catch(err => {
+        this.props.hideModal()
+        message.error('There was an error. Please try again later.')
+        console.log('error', err)
+      })
+    }
+  }
+
   modalContent = () => {
     if (typeof this.props.modalVisibility === "number"){
       let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
@@ -59,7 +83,14 @@ class AccountPage extends Component {
             <h3> Tracklisting </h3>
             <p>{currentRelease.description}</p>
 
-            <p> <b>Price:</b> {currentRelease.price} ETH</p>
+            <h3> Price </h3>
+            <p><Input
+              size="small"
+              className="edit-input"
+              onChange={(e) => this.props.setNewPrice(e.target.value)}
+              defaultValue={currentRelease.price} />
+              ETH
+            </p>
           </Col>
           <Col>
             <img alt="release art" src={currentRelease.artwork} />
@@ -72,7 +103,7 @@ class AccountPage extends Component {
     }
   }
 
-  editReleaseLink = (text, record) => (<a onClick={() => this.showModal(record.id)}>Edit</a>)
+  editReleaseLink = (text, record) => (<a onClick={() => this.props.showModal(record.id)}>Edit</a>)
 
   render() {
     return (
@@ -82,14 +113,15 @@ class AccountPage extends Component {
           handleWithdraw={this.handleWithdraw}
           />
         {this.props.user.releases ?
-          <UserReleasesManager userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}
-          editReleaseLink={this.editReleaseLink}
+          <UserReleasesManager
+            userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}
+            editReleaseLink={this.editReleaseLink}
           /> :
           <div> No releases here!</div>}
           <Modal
             visible={typeof this.props.modalVisibility === 'number'}
             closable={false}
-            onOk={this.handlePurchase}
+            onOk={this.handleEdit}
             okText="Edit Release"
             onCancel={this.props.hideModal}
             width={700}
@@ -105,7 +137,9 @@ class AccountPage extends Component {
 const mapStateToProps = state => ({
   contract: state.web3.contract,
   user: state.user,
-  releases: state.site.releases
+  releases: state.site.releases,
+  modalVisibility: state.site.modalVisibility,
+  newPrice: state.site.newPrice
 })
 
-export default connect(mapStateToProps, { setUserReleases, showModal, hideModal })(AccountPage);
+export default connect(mapStateToProps, { setUserReleases, showModal, hideModal, setNewPrice, resetNewPrice })(AccountPage);
