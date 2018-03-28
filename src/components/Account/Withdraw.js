@@ -3,10 +3,14 @@ import React from 'react';
 import { Button, Row, Col } from 'antd';
 
 const Withdraw = ({ earnings, handleWithdraw }) => (
-  <Row className="subcontainer">
-    <Col span={22} offset={1}><h3 className="page-item">total ETH currently stored on resound: {earnings} ETH</h3></Col>
-    <Col span={22} offset={1}><Button type="primary" className="page-item" onClick={handleWithdraw}>Withdraw Earnings</Button></Col>
-  </Row>
+    <Row type="flex" justify="center">
+    <Col offset={1} span={6}>
+        <h2 className="page-item">Earnings stored: {earnings} ETH</h2>
+    </Col>
+    <Col span={6}>
+      <Button type="primary" className="page-item" onClick={handleWithdraw}>Withdraw Earnings</Button>
+    </Col>
+    </Row>
 );
 
 export default Withdraw;
