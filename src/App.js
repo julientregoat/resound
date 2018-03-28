@@ -167,7 +167,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div>
         <Header />
         <Switch>
           <Route exact path="/" render={routeProps => (

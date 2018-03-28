@@ -116,7 +116,7 @@ class AccountPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="Page">
         <Withdraw
           earnings={this.props.user.earningsBalance}
           handleWithdraw={this.handleWithdraw}

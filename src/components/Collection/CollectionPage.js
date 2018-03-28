@@ -48,7 +48,7 @@ class CollectionPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="Page">
         <Col offset={1}>
           <h1>Your Collection</h1>
         </Col>

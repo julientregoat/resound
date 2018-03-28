@@ -69,7 +69,7 @@ class HomePage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="Page">
         <LatestReleases releases={this.props.releases}/>
         <Modal
           visible={typeof this.props.modalVisibility === 'number'}

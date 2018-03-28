@@ -131,6 +131,7 @@ class NewReleasePage extends Component {
         size="large"
         tip="Uploading release... Make sure you accept the Metamask prompt."
         spinning={this.props.uploader.uploading}
+        className="Page"
       >
         <Col offset={2}><h1>Submit New Release</h1></Col>
         <NewReleaseForm

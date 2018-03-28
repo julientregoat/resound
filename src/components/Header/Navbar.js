@@ -3,7 +3,7 @@ import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => (
-  <Menu mode="horizontal" className="menu-adjust" selectedKey={[0]}>
+  <Menu theme="dark" mode="horizontal" className="menu-adjust" selectedKey={[0]}>
     <Menu.Item><Link to="/" className="menu-item">Home</Link></Menu.Item>
     <Menu.Item><Link to="/collection" className="menu-item">Collection</Link></Menu.Item>
     <Menu.Item><Link to="/new" className="menu-item">New Release</Link></Menu.Item>

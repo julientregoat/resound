@@ -1,20 +1,24 @@
 @import '~antd/dist/antd.css';
 
-.App {
-  margin-top: 25px;
+.Page, .header {
+  /* margin-top: 25px; */
   margin-left: 150px;
   margin-right: 150px;
+
 }
 
 body {
   /* background-image: url("vector.jpg") !important;
-  background-size: 300px 300px !important;
-  background-repeat: repeat-y !important; */
+  background-repeat: repeat !important; */
 }
 
 .header h1 {
   font-size: 48px;
-  color: blue !important;
+  color: white !important;
+}
+
+.header-container {
+  background-color: #07142d !important;
 }
 
 .header {
@@ -28,6 +32,7 @@ body {
 
 .header-item {
   margin-right: 5px;
+  color: white !important;
 }
 
 .menu-item {

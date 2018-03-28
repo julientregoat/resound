@@ -4,7 +4,7 @@ class AboutPage extends Component {
 
   render() {
     return (
-      <div> About this project - Render Markup Readme from github?</div>
+      <div className="Page"> About this project - Render Markup Readme from github?</div>
     );
   }
 

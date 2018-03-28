@@ -5,8 +5,8 @@ import Navbar from './Navbar'
 import { Row, Col } from 'antd';
 
 const Header = ({ user }) => (
-  <div className="header">
-    <Row type="flex" justify="space-between">
+  <div className="header-container">
+    <Row type="flex" justify="space-between" className="header">
         <h1> resound </h1>
         <span>
           <Navbar />
