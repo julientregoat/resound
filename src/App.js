@@ -114,31 +114,29 @@ class App extends Component {
   }
 
   fetchReleaseInfo = id => {
-    if (this.props.releases.filter(release => release.id === id).length === 0){
-      Promise.all([
-        this.props.contract.releaseInfo(id, {from: this.props.user.wallet, gas: 1200000}),
-        this.props.contract.releaseContent(id, {from: this.props.user.wallet, gas: 1200000})
-      ])
-      .then(release => {
-        this.props.ipfs.files.cat(release[1][1])
-        .then(artworkString => {
-          let releaseObj = {
-            key: id,
-            id: id,
-            owner: release[0][0],
-            artist: release[0][1],
-            title: release[0][2],
-            description: release[0][3],
-            tracklist: release[0][4],
-            price: this.correctDecimalPlace(release[1][0]),
-            artwork: artworkString,
-            files: this.fileBufferConversion(release[1][2])
-          }
-          this.props.addRelease(releaseObj)
-        })
-        .catch(console.log)
+    Promise.all([
+      this.props.contract.releaseInfo(id, {from: this.props.user.wallet, gas: 1200000}),
+      this.props.contract.releaseContent(id, {from: this.props.user.wallet, gas: 1200000})
+    ])
+    .then(release => {
+      this.props.ipfs.files.cat(release[1][1])
+      .then(artworkString => {
+        let releaseObj = {
+          key: id,
+          id: id,
+          owner: release[0][0],
+          artist: release[0][1],
+          title: release[0][2],
+          description: release[0][3],
+          tracklist: release[0][4],
+          price: this.correctDecimalPlace(release[1][0]),
+          artwork: artworkString,
+          files: this.fileBufferConversion(release[1][2])
+        }
+        this.props.addRelease(releaseObj)
       })
-    }
+      .catch(console.log)
+    })
   }
 
   getReleases = () => {

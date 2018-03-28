@@ -92,12 +92,23 @@ export default (state = initialState, action) => {
     case 'ADD_RELEASE':
       // checking to see if a release with this ID already exists
       if (state.releases.filter(release => release.id === action.payload.release.id).length !== 0){
-        return { ...state }
+        let releaseIndex = state.releases.indexOf(action.payload.release);
+        let copy = [...state.releases]
+        copy[releaseIndex] = action.payload.release
+        return {
+          ...state,
+          releases: copy
+        }
       } else {
         return {
           ...state,
           releases: [...state.releases, action.payload.release]
         }
+      }
+    case 'RESET_RELEASES':
+      return {
+        ...state,
+        releases: []
       }
     case 'SHOW_MODAL':
       return {

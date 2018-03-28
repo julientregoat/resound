@@ -28,6 +28,7 @@ class AccountPage extends Component {
   }
 
   componentDidUpdate(){
+    this.props.getUserInfo(true)
     this.getUserReleases()
   }
 
@@ -56,7 +57,9 @@ class AccountPage extends Component {
       .then(res => {
         this.props.hideModal()
         message.success('Price changed!')
-        setTimeout(() => this.props.getUserInfo(true), 4000)
+        setTimeout(() => {
+          this.props.getReleases()
+          this.props.getUserInfo(true)}, 3000)
         this.props.resetNewPrice()
       })
       .catch(err => {
