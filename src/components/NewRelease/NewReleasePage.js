@@ -133,7 +133,7 @@ class NewReleasePage extends Component {
         spinning={this.props.uploader.uploading}
         className="Page"
       >
-        <Col offset={2}><h1>Submit New Release</h1></Col>
+        <Col offset={4} className="page-item"><h1>Submit New Release</h1></Col>
         <NewReleaseForm
           submit={this.handleSubmit}
           setFileList={this.setFileList}
