@@ -32,11 +32,12 @@ body {
 
 .header-item {
   margin-right: 5px;
-  color: white !important;
+  color: 	#f9f9f9 !important;
 }
 
 .menu-item {
   margin-right: 30px;
+  color: 	#f9f9f9 !important;
 }
 
 .image-upload-preview {
