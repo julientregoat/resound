@@ -19,7 +19,7 @@ const CollectionTable = ({ userPurchases, handleExpand, handleDownload }) => (
               <p>{release.description}</p>
 
               <h3> Tracklisting </h3>
-              <p>{release.description}</p>
+              <p>{release.tracklist}</p>
             </Col>
             <Col span={12}>
               <h3>Download Links</h3>

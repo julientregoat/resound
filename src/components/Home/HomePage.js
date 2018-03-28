@@ -52,7 +52,7 @@ class HomePage extends Component {
             <p>{currentRelease.description}</p>
 
             <h3> Tracklisting </h3>
-            <p>{currentRelease.description}</p>
+            <p>{currentRelease.tracklist}</p>
 
             <p> <b>Price:</b> {currentRelease.price} ETH</p>
           </Col>

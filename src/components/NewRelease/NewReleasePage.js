@@ -7,7 +7,7 @@ import { setUploaderFileList,
          resetArtworkPreview,
          setUSDConversion } from '../../actions/siteActions';
 
-import { Spin, message } from 'antd';
+import { Spin, message, Col } from 'antd';
 import NewReleaseForm from './NewReleaseForm';
 
 const Jimp = require('jimp')
@@ -42,6 +42,7 @@ class NewReleasePage extends Component {
   }
 
   createRelease = (tracklistHashes, artworkHash, values, form) => {
+    console.log(values)
     this.props.contract.createRelease(values.artist,
                                       values.title,
                                       values.description,
@@ -131,6 +132,7 @@ class NewReleasePage extends Component {
         tip="Uploading release... Make sure you accept the Metamask prompt."
         spinning={this.props.uploader.uploading}
       >
+        <Col offset={2}><h1>Submit New Release</h1></Col>
         <NewReleaseForm
           submit={this.handleSubmit}
           setFileList={this.setFileList}

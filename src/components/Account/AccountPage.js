@@ -126,7 +126,7 @@ class AccountPage extends Component {
             userReleases={this.props.releases.filter(release => this.props.user.releases.includes(release.id))}
             editReleaseLink={this.editReleaseLink}
           /> :
-          <div> No releases here!</div>}
+          <Col offset={1}> No releases here!</Col>}
           <Modal
             visible={typeof this.props.modalVisibility === 'number'}
             closable={false}

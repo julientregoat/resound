@@ -98,10 +98,10 @@ class App extends Component {
   }
 
   componentDidUpdate(){
-    console.log('app reload')
     // these are both being called twice on app start, fix that
     this.setupWeb3()
     this.getUserInfo()
+    console.log('app update')
   }
 
   // this converts the price integer located in the Release struct
@@ -131,6 +131,7 @@ class App extends Component {
     .then(release => {
       this.props.ipfs.files.cat(release[1][1])
       .then(artworkString => {
+        console.log(release[0])
         let releaseObj = {
           key: id,
           id: id,

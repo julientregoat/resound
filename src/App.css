@@ -8,11 +8,13 @@
 
 body {
   /* background-image: url("vector.jpg") !important;
-  background-repeat: repeat !important; */
+  background-size: 300px 300px !important;
+  background-repeat: repeat-y !important; */
 }
 
-h1 {
+.header h1 {
   font-size: 48px;
+  color: blue !important;
 }
 
 .header {
@@ -20,8 +22,8 @@ h1 {
 }
 
 .menu-adjust {
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 .header-item {

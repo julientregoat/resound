@@ -10,7 +10,7 @@ const Header = ({ user }) => (
         <h1> resound </h1>
         <span>
           <Navbar />
-          <Col offset={8}>
+          <Col offset={6}>
             <span className="header-item">Wallet: {user.wallet ? user.wallet.slice(0, 8) : null}...</span>
             <span className="header-item">|</span>
             <span className="header-item">Balance: {user.walletBalance} ETH</span>
