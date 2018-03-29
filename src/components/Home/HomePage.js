@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LatestReleases from './LatestReleases';
-import { Modal, Row, Col, message } from 'antd';
+import { Modal, Row, Col, message, Tag } from 'antd';
 
 import { connect } from 'react-redux';
 import { addRelease, hideModal } from '../../actions/siteActions';

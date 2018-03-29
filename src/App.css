@@ -1,11 +1,17 @@
 @import '~antd/dist/antd.css';
 
 .Page, .header {
-  /* margin-top: 25px; */
   margin-left: 150px;
   margin-right: 150px;
 
 }
+
+.header {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.header
 
 body {
   /* background-image: url("vector.jpg") !important;
@@ -18,7 +24,7 @@ body {
 }
 
 .header-container {
-  background-color: #07142d !important;
+  background-color: rgba(0, 21, 42, 1) !important;
 }
 
 .header {
@@ -26,17 +32,16 @@ body {
 }
 
 .menu-adjust {
-  margin-top: 15px;
+  margin-top: 16px;
   margin-bottom: 10px;
 }
 
 .header-item {
   margin-right: 5px;
-  color: 	#f9f9f9 !important;
 }
 
 .menu-item {
-  margin-right: 30px;
+  margin-right: 12px;
   color: 	#f9f9f9 !important;
 }
 
@@ -51,6 +56,10 @@ body {
 
 .release-card {
   margin-bottom: 25px;
+}
+
+.user-info-adjust {
+  margin-top: 29px;
 }
 
 .subcontainer {

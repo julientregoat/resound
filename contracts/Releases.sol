@@ -7,8 +7,8 @@ contract Releases {
   function Releases() public {
       owner = msg.sender;
   }
-
-  struct Release {
+:
+    struct Release {
     uint id;
     address owner;
     string artist;
