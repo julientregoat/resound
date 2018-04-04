@@ -11,8 +11,6 @@
   margin-right: 100px;
 }
 
-.header
-
 body {
   /* background-image: url("vector.jpg") !important;
   background-repeat: repeat !important; */
@@ -36,12 +34,8 @@ body {
   margin-bottom: 10px;
 }
 
-.header-item {
-  margin-right: 5px;
-}
-
 .menu-item {
-  margin-right: 12px;
+  margin-right: 5px;
   color: 	#f9f9f9 !important;
 }
 
@@ -68,4 +62,8 @@ body {
 
 .page-item {
   margin-bottom: 50px;
+}
+
+.diagram {
+  height: 750px;
 }

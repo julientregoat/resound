@@ -24,6 +24,7 @@ class HomePage extends Component {
 
   handlePurchase = () => {
     let currentRelease = this.props.releases.find(release => release.id === this.props.modalVisibility)
+    console.log('curr rleease', currentRelease)
     this.props.contract.purchaseRelease(currentRelease.id, {from: this.props.user.wallet, value: this.toWei(currentRelease.price)})
     .then(res => {
       this.props.hideModal()

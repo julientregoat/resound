@@ -14,10 +14,13 @@ class CollectionPage extends Component {
     if (this.props.releases.length === 0){
       this.props.getReleases()
     }
+    console.log(this.props.user.collection)
     if (this.props.contract && this.props.user.collection === null){
+      console.log('hi')
       this.props.contract.getUserPurchases({from: this.props.user.wallet})
       .then(bigNums => {
         let normalNums = bigNums.map(bigNum => bigNum.toNumber())
+        console.log("poop", bigNums)
         this.props.setUserCollection(normalNums)
       })
       .catch(console.log)
@@ -30,6 +33,7 @@ class CollectionPage extends Component {
   }
 
   componentDidUpdate(){
+    this.props.getUserInfo(true)
     this.getUserPurchases()
   }
 
