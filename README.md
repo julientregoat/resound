@@ -6,7 +6,7 @@ The goal here was to develop a front end using React/Redux, and develop an 'alwa
 
 ## Flow
 
-![resound Flow Chart](./src/EthereumDiagram.jpg)
+![resound Flow Chart](https://i.imgur.com/9n8dgoo.jpg)
 
 In developing this decentralized serverless architecture for my backend, I leveraged two services:
   * The Ethereum Virtual Machine (EVM) as a database for primitive data types and transaction logic.
