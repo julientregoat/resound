@@ -18,6 +18,10 @@ class NewReleasePage extends Component {
     this.props.getUserInfo(true)
   }
 
+  componentWillUnmount(){
+    this.props.setUSDConversion(0)
+  }
+
   calculateUSD = (e) => {
     this.props.setUSDConversion(e.target.value * this.props.USDPrice)
   }
@@ -42,7 +46,9 @@ class NewReleasePage extends Component {
   }
 
   createRelease = (tracklistHashes, artworkHash, values, form) => {
-    console.log(values)
+    console.log(this.props.contract)
+    // this.props.contract.createRelease.estimateGas(values.artist, values.title, values.description, values.tracklist, this.props.toTenThousandths(values.price), artworkHash, tracklistHashes, {from: this.props.user.wallet})
+    // .then(res => console.log(res)).catch(res => console.log(res))
     this.props.contract.createRelease(values.artist,
                                       values.title,
                                       values.description,
@@ -52,6 +58,7 @@ class NewReleasePage extends Component {
                                       tracklistHashes,
                                       {from: this.props.user.wallet})
     .then(res => {
+      console.log(res)
       this.props.isNotUploading()
       form.resetFields()
       this.props.resetArtworkPreview()
@@ -63,7 +70,6 @@ class NewReleasePage extends Component {
       message.error('There was an error uploading your release. Please try again.')
       console.log("create release error", res)
     })
-    // this.props.isUploading()
   }
 
   uploadIPFS = (values, form) => {
@@ -131,7 +137,6 @@ class NewReleasePage extends Component {
         size="large"
         tip="Uploading release... Make sure you accept the Metamask prompt."
         spinning={this.props.uploader.uploading}
-        className="Page"
       >
         <Col offset={4} className="page-item"><h1>Submit New Release</h1></Col>
         <NewReleaseForm
