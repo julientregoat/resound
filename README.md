@@ -4,6 +4,9 @@ Resound is a decentralized music marketplace for independent artists and labels.
 
 The goal here was to develop a front end using React/Redux, and develop an 'always on' decentralized, serverless backend. In doing so, people could choose to use the website without this frontend due to the nature of such a backend. This ultimately enables unlimited access despite any efforts to remove it.
 
+
+**This code needs to be refactored!**
+
 ## To Run It 
 
 For this version, I currently run it on [Truffle's Ganache](http://truffleframework.com/ganache/). However, it points to whatever you have locally listening on port 8545 (edited through `truffle.js`), so you could easily use a Geth node or similar. Additionally, MetaMask must point to the same network as the port in `truffle.js`.
